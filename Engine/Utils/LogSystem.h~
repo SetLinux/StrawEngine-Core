@@ -1,0 +1,2 @@
+#include <iostream>
+#define LOG(x) std::cout << "[*] Log : (" <<  x << ")\n";
