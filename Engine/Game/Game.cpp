@@ -7,6 +7,7 @@ Game::Game() {
   screenShdr =
       new Shader("/home/mohamedmedhat/Desktop/StrawEngine/build/FBO.fs",
                  "/home/mohamedmedhat/Desktop/StrawEngine/build/FBO.vs");
+  
 }
 
 Game::~Game() {}
@@ -14,6 +15,8 @@ Game::~Game() {}
 Entity *Game::MakeSprite(X_Vector pos, X_Vector scale) {
   Entity* ent = InnerMakeSprite(pos,scale);
   ent->AddAddon<Physics>();
+  defaultBatch.mySprites.push_back(ent->GetAddon<Sprite>());
+  
   return ent;
 }
 void Game::AddToPhysicsQueue(std::function<void()> input) {
@@ -26,6 +29,8 @@ Entity *Game::MakeSprite(X_Vector pos, X_Vector scale, bool ePhysics) {
   Entity* ent = InnerMakeSprite(pos,scale);
   if (ePhysics)
     ent->AddAddon<Physics>();
+  defaultBatch.mySprites.push_back(ent->GetAddon<Sprite>());
+  
   return ent;
 }
 
@@ -35,9 +40,10 @@ Entity *Game::MakeSprite(X_Vector pos, X_Vector scale, ShaderBatch *batch) {
   return ent;
 }
 
-ShaderBatch *Game::MakeShaderBatch(unsigned int shdrId, SortOrder ordr) {
+ShaderBatch *Game::MakeShaderBatch(Shader* shdr, SortOrder ordr) {
   ShaderBatch *sb = new ShaderBatch();
-  sb->ProgramID = shdrId;
+  
+  sb->shdr = (Shader*)shdr;
   if (ordr == SortOrder::FrontOrder) {
     shdrBatches.push_back(sb);
   } else {
@@ -63,6 +69,8 @@ void Game::Update(float dt) {}
 
 void Game::FixedUpdate(float dt) {}
 
+void Game::OnGUI() {}
+
 void Game::InnerInit() {
   PhysicsSystem::Init();
   GUI::Init(this,"/home/mohamedmedhat/Desktop/StrawEngine/GUI");
@@ -74,10 +82,11 @@ void Game::InnerInit() {
   renderer.Init();
   shdr->Init();
   shdrBatches.push_back(&defaultBatch);
-  defaultBatch.ProgramID = shdr->ID;
+  defaultBatch.shdr = shdr;
   screenShdr->Init();
   shdr->use();
   Start();
+
 }
 void Game::InnerUpdate(float dt, float alpha) {
   Update(dt);
@@ -87,8 +96,10 @@ void Game::InnerUpdate(float dt, float alpha) {
   glClearColor(0, 1, 1, 1);
  
   for (int i = 0; i < shdrBatches.size(); i++) {
+    glUseProgram(shdrBatches[i]->shdr->ID);
+    shdrBatches[i]->shdr->BindUniforms();
+    
     renderer.Begin();
-    glUseProgram(shdrBatches[i]->ProgramID);
     for(int f =0; f < shdrBatches[i]->mySprites.size(); f++){
       if( shdrBatches[i]->mySprites[f]){
         for (int y = 0;
@@ -102,6 +113,7 @@ void Game::InnerUpdate(float dt, float alpha) {
     renderer.End();
   }
   GUI::BeginRender(dt);
+  OnGUI();
   GUI::EndRender();
    
  
@@ -141,7 +153,5 @@ Entity *Game::InnerMakeSprite(X_Vector pos, X_Vector scale) {
   ent->position = pos;
   ent->scale = scale;
   ent->AddAddon<Sprite>()->shdr = shdr;
-  
-  defaultBatch.mySprites.push_back(ent->GetAddon<Sprite>());
   return ent;
 }

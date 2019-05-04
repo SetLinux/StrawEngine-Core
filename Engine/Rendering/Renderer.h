@@ -1,6 +1,5 @@
 #pragma once
 #include "../Addons/Sprite.h"
-
 #include <GL/glew.h>
 #include "../Math/Math.h"
 #include <vector>
@@ -36,11 +35,11 @@ public:
 	void Submit(Sprite* input);
 	void End();
 	void Looper();
+	unsigned int m_VAO, m_VBO, m_IBO;
 private:
 	void InnerSubmit(Sprite* input);
 	int IndNum(int vecnum);
 	int IndNumMap(int mapnum);
-	unsigned int m_VAO, m_VBO, m_IBO;
 	int m_IndexCounter;
 	Vertex* m_Buffer;
 	std::vector<RenderBatch*> renderBatches;

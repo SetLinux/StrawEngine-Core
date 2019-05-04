@@ -57,7 +57,7 @@ void GUI::BeginRender(float dt) {
                NK_WINDOW_BORDER)) {
     nk_layout_row_static(ctx,700,700,4);
     nk_button_sliced(ctx, "badfsdfsdfdsfsdfby",12.f,12.f,36.f,36.f);
-   
+    
   }
   nk_end(ctx);
   nk_glfw3_render(NK_ANTI_ALIASING_ON, 3000000, 300000);

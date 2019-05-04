@@ -7,6 +7,11 @@
 #include <ctime>
 #include <iostream>
 #include <random>
+class CustomShader : public Shader{
+public:
+  CustomShader(std::string fragpath,std::string verpath) : Shader(fragpath,verpath) {}
+  
+};
 class MyGame : public Game {
   class Clickalbe : public Addon {
   public:
@@ -38,12 +43,18 @@ class MyGame : public Game {
   float deltaY;
   int score = 0;
   int counter = 0;
+  CustomShader* csshdr;
+  ShaderBatch* shdrBatch;
   void Start() override {
     srand(time(0));
     cursor = MakeSprite(X_Vector(0, 0, -1), X_Vector(25, 25), false);
     cursor->GetAddon<Sprite>()->tex =
         GetTexture("/home/mohamedmedhat/Desktop/StrawEngine/build/wall.jpg")
             .get();
+    csshdr = new CustomShader("/home/mohamedmedhat/Desktop/StrawEngine/build/frag.fs","/home/mohamedmedhat/Desktop/StrawEngine/build/vert.vs");
+    csshdr->Init();
+    shdrBatch = MakeShaderBatch(csshdr, SortOrder::BackOrder);
+        
   }
   void Update(float dt) override {}
   void FixedUpdate(float dt) override {
@@ -55,7 +66,8 @@ class MyGame : public Game {
 
       int result = dist6(rng);
       EntityHandler Enemy =
-          MakeSprite(X_Vector(result, 400), X_Vector(128, 128));
+	MakeSprite(X_Vector(result, 400), X_Vector(128, 128),shdrBatch);
+      Enemy->AddAddon<Physics>();
       Enemy->GetAddon<Sprite>()->tex =
           GetTexture("/home/mohamedmedhat/Desktop/StrawEngine/build/minecraft.png")
               .get();
@@ -99,6 +111,9 @@ class MyGame : public Game {
     finale.z = 20;
     cursor->position = finale;
     
+  }
+  void OnGUI() override{
+    GUI::Label("SCORE : " + std::to_string(score));
   }
 };
 

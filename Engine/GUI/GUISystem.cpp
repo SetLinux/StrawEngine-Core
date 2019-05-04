@@ -34,37 +34,33 @@ roboto = nk_font_atlas_add_from_file(atlas,  "/home/mohamedmedhat/nuklear/nuklea
    * "../../../extra_font/Cousine-Regular.ttf", 13, 0);*/
   nk_glfw3_font_stash_end();
   nk_style_set_font(ctx,&roboto->handle);
-  std::shared_ptr<Texture>  tex =  game->GetTexture("/home/mohamedmedhat/Desktop/StrawEngine/GUI/UI_elements.png");
-  struct nk_image tes = nk_subimage_id(tex->GetID(), 192,192, nk_rect(96,32,96,32));
-  struct nk_image tes2 = nk_subimage_id(tex->GetID(), 192,192, nk_rect(96,0,96,32));
-  struct nk_image tes3= nk_subimage_id(tex->GetID(), 192,192, nk_rect(96,64,96,32));
-  ctx->style.button.normal = nk_style_item_image(tes);
-  ctx->style.button.hover = nk_style_item_image(tes2);
-  ctx->style.button.active = nk_style_item_image(tes3);
-  ctx->style.button.text_normal =  nk_color(nk_rgb(256,256,256));
 }
 void GUI::LoadScheme(const std::string &schemeFile) {}
 void GUI::SetFont(const std::string &FontFile) {}
-void GUI::UpdateGUIIO(SDL_Event &event) {
+void GUI::UpdateGUIIO() {
   //  nk_sdl_handle_event(&event);
+  
   nk_glfw3_new_frame();
 }
 
 void GUI::BeginRender(float dt) {
   ctx->style.window.fixed_background = nk_style_item_hide();
-  /* GUI */
-  if (nk_begin(ctx, "Demo", nk_rect(0, 0, 1000, 1000),
-               NK_WINDOW_BORDER)) {
-    nk_layout_row_static(ctx,700,700,4);
-    nk_button_sliced(ctx, "badfsdfsdfdsfsdfby",12.f,12.f,36.f,36.f);
-    
-  }
-  nk_end(ctx);
-  nk_glfw3_render(NK_ANTI_ALIASING_ON, 3000000, 300000);
+  nk_begin(ctx, "Demo", nk_rect(0, 0, 1000,1000),NK_WINDOW_NO_SCROLLBAR);
 }
 void inject_time_pulse(double &last) {
   // inject the time that passed since the last call
   
 }
+bool GUI::Button(X_Vector pos,X_Vector scale,const std::string& text){
+  nk_layout_row_static(ctx, scale.x, scale.y, 2);
+  return nk_button_label(ctx,text.c_str());
+}
+void GUI::Label(const std::string &text){
+  nk_layout_row_static(ctx, 800,300, 2);
+  nk_label(ctx,text.c_str(),NK_TEXT_ALIGN_LEFT);
+}
+void GUI::EndRender() {
+  nk_end(ctx);
+  nk_glfw3_render(NK_ANTI_ALIASING_ON, 3000000, 300000);
 
-void GUI::EndRender() {}
+}

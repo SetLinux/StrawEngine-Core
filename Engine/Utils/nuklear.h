@@ -19588,7 +19588,6 @@ nk_draw_button(struct nk_command_buffer *out,
     else background = &style->normal;
     struct nk_image CImage = background->data.image;
     struct nk_image OImage = background->data.image;
-    std::cout << "H : "  << OImage.region[3] << std::endl;
     
     if (background->type == NK_STYLE_ITEM_IMAGE) {
       if(borderx > 0 ){

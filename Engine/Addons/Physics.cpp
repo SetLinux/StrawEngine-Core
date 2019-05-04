@@ -20,7 +20,6 @@ void Physics::OnCreate()
   bodyDef.fixedRotation = true;
   
   m_body = PhysicsSystem::GetWorld()->CreateBody(&bodyDef);
- 
   b2PolygonShape shape;
   shape.SetAsBox(
 		 owner->scale.x / 2 / PhysicsSystem::MPP,

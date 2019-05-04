@@ -57,16 +57,8 @@ void Sprite::SetTexBound(float x,float y,float w,float h){
   float texW = w / tex->Width;
   
   float texH = h / tex->Height;
-  std::cout << "SYBABY : " << texH << std::endl;
-
   vertices[0].TexCoord = X_Vector(texX,texY);
   vertices[1].TexCoord = X_Vector(texX + texW,texY);
   vertices[2].TexCoord = X_Vector(texX + texW, texY - texH);
   vertices[3].TexCoord = X_Vector(texX  , texY - texH);
-  std::cout <<"FIRST" <<vertices[0].TexCoord << std::endl;
-  std::cout <<"Second" <<vertices[1].TexCoord << std::endl;
-  std::cout <<"THIRD" <<vertices[2].TexCoord << std::endl;
-  std::cout <<"Fourth" <<vertices[3].TexCoord << std::endl;
-
-    
 }

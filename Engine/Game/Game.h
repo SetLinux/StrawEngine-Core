@@ -19,7 +19,7 @@ public:
   ShaderBatch(){
     mySprites.reserve(200000);
   }
-  unsigned int ProgramID;
+  Shader* shdr;
   std::vector<Sprite *> mySprites;
 };
 
@@ -34,7 +34,7 @@ public:
   virtual void Start();
   virtual void Update(float dt);
   virtual void FixedUpdate(float dt);
-  
+  virtual void OnGUI();
   void InnerInit();
   void InnerUpdate(float dt, float alpha);
   void InnerFixedUpdate(float dt);
@@ -58,15 +58,14 @@ public:
   std::vector<ShaderBatch *> shdrBatches;
   Shader *screenShdr;
   FBO fbo;
-  
-  ShaderBatch *MakeShaderBatch(unsigned int ShaderID, SortOrder ordr);
+  Renderer renderer;  
+  ShaderBatch *MakeShaderBatch(Shader* shdr, SortOrder ordr);
   std::deque<Entity *> m_Entities;
 private:
   EntityHandler InnerMakeSprite(X_Vector,X_Vector);
   unsigned int currentBoundShader = 0;
   unsigned int quadVAO, quadVBO;
   std::unordered_map<std::string, TextureHandler> m_TexturesList;
-  Renderer renderer;
   ShaderBatch defaultBatch;
   float teset;
   

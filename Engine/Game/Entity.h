@@ -18,7 +18,7 @@ public:
   }
   // Vectors For Transformation
   X_Vector position{0, 0}, scale{0, 0};
-  float Rotation{40};
+  float Rotation{0};
   template <typename T> T *AddAddon() {
     T *x = new T();
     x->owner = (Entity *)this;
@@ -39,7 +39,7 @@ public:
   std::vector<Addon *> m_Addons;
   void *Data = (void *)NULL;
   // ID mainly for sorting
-  int ID = 0;
+  float ID = 0;
 
 private:
 };

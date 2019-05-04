@@ -4,11 +4,8 @@
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
 #include "../Rendering/Texture.h"
-#include <CEGUI/CEGUI.h>
-#include <CEGUI/RendererModules/OpenGL/GL3Renderer.h>
 #include <functional>
 #include <vector>
-#include <SDL2/SDL.h>
 #include "../Utils/SNuklear.h"
 
 class Game;
@@ -24,14 +21,11 @@ public:
   static void SetFunction(std::function<void()> input) { myDraw = input; }
   static void LoadScheme(const std::string& schemeFile);
   static void SetFont(const std::string& fontFile);
-  static CEGUI::Window* createWidget(const std::string& scheme,X_Vector destRectPer,X_Vector destRecPix,const std::string& name="");
+  
 private:
   static struct  nk_font *roboto;
   static std::function<void()> myDraw;
   static Game *gm;
-  static CEGUI::OpenGL3Renderer *m_Renderer;
-  static CEGUI::GUIContext *m_context;
-  static CEGUI::Window* m_root;
   static nk_context* ctx;
   static nk_colorf bg;
 };

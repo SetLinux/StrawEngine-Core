@@ -131,4 +131,5 @@ template <typename T> inline X_Vector X_Vector::fromVec(T other) {
 struct Vertex {
   X_Vector position;
   X_Vector TexCoord;
+  void* data;
 };

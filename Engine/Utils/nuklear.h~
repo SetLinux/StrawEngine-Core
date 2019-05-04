@@ -523,7 +523,7 @@ enum nk_symbol_type {
 /// hereby ranges from standard library to just specifying a fixed sized block of memory
 /// which nuklear has to manage itself from.
 ///
-/// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~c
+/// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// struct nk_context ctx;
 /// nk_init_xxx(&ctx, ...);
 /// while (1) {
@@ -3052,6 +3052,7 @@ NK_API void nk_value_color_hex(struct nk_context*, const char *prefix, struct nk
  * ============================================================================= */
 NK_API int nk_button_text(struct nk_context*, const char *title, int len);
 NK_API int nk_button_label(struct nk_context*, const char *title);
+NK_API int nk_button_sliced(struct nk_context*,const char* title,float borderx,float bordery,float draw,float drawy);
 NK_API int nk_button_color(struct nk_context*, struct nk_color);
 NK_API int nk_button_symbol(struct nk_context*, enum nk_symbol_type);
 NK_API int nk_button_image(struct nk_context*, struct nk_image img);
@@ -3059,7 +3060,7 @@ NK_API int nk_button_symbol_label(struct nk_context*, enum nk_symbol_type, const
 NK_API int nk_button_symbol_text(struct nk_context*, enum nk_symbol_type, const char*, int, nk_flags alignment);
 NK_API int nk_button_image_label(struct nk_context*, struct nk_image img, const char*, nk_flags text_alignment);
 NK_API int nk_button_image_text(struct nk_context*, struct nk_image img, const char*, int, nk_flags alignment);
-NK_API int nk_button_text_styled(struct nk_context*, const struct nk_style_button*, const char *title, int len);
+  NK_API int nk_button_text_styled(struct nk_context*, const struct nk_style_button*, const char *title, int len,float bordery = 0,float borderx = 0,float cornerx = 0,float cornery = 0);
 NK_API int nk_button_label_styled(struct nk_context*, const struct nk_style_button*, const char *title);
 NK_API int nk_button_symbol_styled(struct nk_context*, const struct nk_style_button*, enum nk_symbol_type);
 NK_API int nk_button_image_styled(struct nk_context*, const struct nk_style_button*, struct nk_image img);
@@ -5639,6 +5640,7 @@ template<typename T> struct nk_alignof{struct Big {T x; char c;}; enum {
 #endif
 #ifdef NK_INCLUDE_STANDARD_IO
 #include <stdio.h> /* fopen, fclose,... */
+#include <iostream>
 #endif
 #ifdef NK_INCLUDE_STANDARD_VARARGS
 #include <stdarg.h> /* valist, va_start, va_end, ... */
@@ -5861,10 +5863,10 @@ NK_LIB void nk_widget_text_wrap(struct nk_command_buffer *o, struct nk_rect b, c
 
 /* button */
 NK_LIB int nk_button_behavior(nk_flags *state, struct nk_rect r, const struct nk_input *i, enum nk_button_behavior behavior);
-NK_LIB const struct nk_style_item* nk_draw_button(struct nk_command_buffer *out, const struct nk_rect *bounds, nk_flags state, const struct nk_style_button *style);
+NK_LIB const struct nk_style_item* nk_draw_button(struct nk_command_buffer *out, const struct nk_rect *bounds, nk_flags state, const struct nk_style_button *style,float bordery=0,float borderx=0,float cornerx=0,float cornery=0);
 NK_LIB int nk_do_button(nk_flags *state, struct nk_command_buffer *out, struct nk_rect r, const struct nk_style_button *style, const struct nk_input *in, enum nk_button_behavior behavior, struct nk_rect *content);
-NK_LIB void nk_draw_button_text(struct nk_command_buffer *out, const struct nk_rect *bounds, const struct nk_rect *content, nk_flags state, const struct nk_style_button *style, const char *txt, int len, nk_flags text_alignment, const struct nk_user_font *font);
-NK_LIB int nk_do_button_text(nk_flags *state, struct nk_command_buffer *out, struct nk_rect bounds, const char *string, int len, nk_flags align, enum nk_button_behavior behavior, const struct nk_style_button *style, const struct nk_input *in, const struct nk_user_font *font);
+NK_LIB void nk_draw_button_text(struct nk_command_buffer *out, const struct nk_rect *bounds, const struct nk_rect *content, nk_flags state, const struct nk_style_button *style, const char *txt, int len, nk_flags text_alignment, const struct nk_user_font *font ,float borderx=0,float bordery=0,float cornerx=0,float cornery=0);
+NK_LIB int nk_do_button_text(nk_flags *state, struct nk_command_buffer *out, struct nk_rect bounds, const char *string, int len, nk_flags align, enum nk_button_behavior behavior, const struct nk_style_button *style, const struct nk_input *in, const struct nk_user_font *font,float bordery=0,float borderx=0,float cornerx=0,float cornery=0);
 NK_LIB void nk_draw_button_symbol(struct nk_command_buffer *out, const struct nk_rect *bounds, const struct nk_rect *content, nk_flags state, const struct nk_style_button *style, enum nk_symbol_type type, const struct nk_user_font *font);
 NK_LIB int nk_do_button_symbol(nk_flags *state, struct nk_command_buffer *out, struct nk_rect bounds, enum nk_symbol_type symbol, enum nk_button_behavior behavior, const struct nk_style_button *style, const struct nk_input *in, const struct nk_user_font *font);
 NK_LIB void nk_draw_button_image(struct nk_command_buffer *out, const struct nk_rect *bounds, const struct nk_rect *content, nk_flags state, const struct nk_style_button *style, const struct nk_image *img);
@@ -19496,7 +19498,7 @@ nk_image_color(struct nk_context *ctx, struct nk_image img, struct nk_color col)
 NK_LIB void
 nk_draw_symbol(struct nk_command_buffer *out, enum nk_symbol_type type,
     struct nk_rect content, struct nk_color background, struct nk_color foreground,
-    float border_width, const struct nk_user_font *font)
+	       float border_width, const struct nk_user_font *font)
 {
     switch (type) {
     case NK_SYMBOL_X:
@@ -19568,25 +19570,130 @@ nk_button_behavior(nk_flags *state, struct nk_rect r,
         }
     }
     if (*state & NK_WIDGET_STATE_HOVER && !nk_input_is_mouse_prev_hovering_rect(i, r))
-        *state |= NK_WIDGET_STATE_ENTERED;
+      *state |= NK_WIDGET_STATE_ENTERED;
     else if (nk_input_is_mouse_prev_hovering_rect(i, r))
-        *state |= NK_WIDGET_STATE_LEFT;
+      *state |= NK_WIDGET_STATE_LEFT;
     return ret;
 }
 NK_LIB const struct nk_style_item*
 nk_draw_button(struct nk_command_buffer *out,
-    const struct nk_rect *bounds, nk_flags state,
-    const struct nk_style_button *style)
+	       const struct nk_rect *bounds, nk_flags state,
+	       const struct nk_style_button *style,float borderx,float bordery,float cornerx,float cornery)
 {
-    const struct nk_style_item *background;
+  const struct nk_style_item *background;
     if (state & NK_WIDGET_STATE_HOVER)
-        background = &style->hover;
+      background = &style->hover;
     else if (state & NK_WIDGET_STATE_ACTIVED)
-        background = &style->active;
+      background = &style->active;
     else background = &style->normal;
-
+    struct nk_image CImage = background->data.image;
+    struct nk_image OImage = background->data.image;
+    std::cout << "H : "  << OImage.region[3] << std::endl;
+    
     if (background->type == NK_STYLE_ITEM_IMAGE) {
-        nk_draw_image(out, *bounds, &background->data.image, nk_white);
+      if(borderx > 0 ){
+      struct nk_rect newerBournds = *bounds;
+      CImage.region[2] = (unsigned short)borderx;
+	CImage.region[3] = (unsigned short)bordery;
+	newerBournds.w = cornerx;
+	newerBournds.h = cornery;
+	//DRAW
+	nk_draw_image(out,newerBournds, &CImage, nk_white);	
+
+	CImage = background->data.image;	
+	CImage.region[0] += (unsigned short)borderx;
+	CImage.region[2] = (unsigned short)(OImage.region[2] - (borderx * 2));
+	CImage.region[3] = (unsigned short)bordery;
+	
+	newerBournds.w = bounds->w - (cornerx * 2);
+	newerBournds.x += cornerx;
+	//DRAW
+	nk_draw_image(out,newerBournds, &CImage, nk_white);
+	newerBournds = *bounds;
+	CImage = background->data.image;
+	CImage.region[2] = borderx;
+	CImage.region[3] = bordery;
+	CImage.region[0] += (OImage.region[2] - (borderx));
+	
+	newerBournds.x += (bounds->w - cornerx);
+	newerBournds.w = cornerx;
+	newerBournds.h = cornery;
+	//DRAW
+        nk_draw_image(out,newerBournds, &CImage, nk_white);
+
+	CImage = background->data.image;
+        CImage.region[1] += bordery;
+	CImage.region[2] = (unsigned short)borderx;
+	CImage.region[3] = (unsigned short)(OImage.region[3] - (bordery * 2));
+	
+	newerBournds.w = cornerx;
+	newerBournds.x = bounds->x;
+	newerBournds.y = bounds->y + cornery;
+	newerBournds.h = bounds->h - (cornery * 2);
+	nk_draw_image(out,newerBournds, &CImage, nk_white);
+
+	CImage = background->data.image;
+	CImage.region[0] += borderx;
+	CImage.region[1] += bordery;
+	CImage.region[2] = (unsigned short)(OImage.region[2] - (borderx * 2));
+	CImage.region[3] = (unsigned short)(OImage.region[3] - (bordery * 2));
+
+	newerBournds.w = bounds->w - (cornerx * 2);
+	newerBournds.h = bounds->h - (cornery * 2);
+	newerBournds.x = bounds->x + cornerx;
+	newerBournds.y = bounds->y + cornery;
+
+        nk_draw_image(out,newerBournds, &CImage, nk_white);
+
+	CImage = background->data.image;
+	//CImage.region[0] += (unsigned short)(OImage.region[2] - borderx);
+	CImage.region[0] += (unsigned short)(OImage.region[2] - (borderx));
+	CImage.region[1] += bordery;
+	CImage.region[2] = (unsigned short)borderx;
+	CImage.region[3] = (unsigned short)(OImage.region[3] - (bordery * 2));
+	newerBournds.x += newerBournds.w;
+	newerBournds.w = cornerx ;
+	newerBournds.y = bounds->y + cornery;
+	newerBournds.h = bounds->h - (cornery * 2);
+      
+	nk_draw_image(out,newerBournds, &CImage, nk_white);
+
+	CImage = background->data.image;
+	CImage.region[1] += (unsigned short)(OImage.region[3] - (bordery));
+	CImage.region[2] = (unsigned short)borderx;
+	CImage.region[3] = (unsigned short)bordery;
+	newerBournds = *bounds;
+	newerBournds.w = cornerx;
+	newerBournds.h = cornery;
+	newerBournds.y += bounds->h - cornery; 
+
+	nk_draw_image(out,newerBournds, &CImage, nk_white);	
+	CImage = background->data.image;
+	CImage.region[0] += borderx;
+	CImage.region[1] += (unsigned short)(OImage.region[3] - (bordery));
+	CImage.region[2] = (unsigned short)(OImage.region[2] - (borderx * 2));
+	CImage.region[3] = (unsigned short)bordery;
+	newerBournds = *bounds;
+	newerBournds.x += cornerx;
+	newerBournds.w = bounds->w - (cornerx * 2);
+	newerBournds.h = cornery;
+	newerBournds.y += bounds->h - cornery; 
+        nk_draw_image(out,newerBournds, &CImage, nk_white);
+	CImage = background->data.image;
+	CImage.region[0] += (unsigned short)(OImage.region[2] - (borderx));
+	CImage.region[1] += (unsigned short)(OImage.region[3] - (bordery));
+	CImage.region[2] = (unsigned short)borderx;
+	CImage.region[3] = bordery;
+        newerBournds = *bounds;
+	newerBournds.x += newerBournds.w - cornerx;
+	newerBournds.w = cornerx ;
+	newerBournds.h = cornery;
+	newerBournds.y += bounds->h - cornery; 
+	nk_draw_image(out,newerBournds, &CImage, nk_white);
+      }else{
+	 nk_draw_image(out,*bounds, &background->data.image, nk_white);
+      }
+      
     } else {
         nk_fill_rect(out, *bounds, style->rounding, background->data.color);
         nk_stroke_rect(out, *bounds, style->rounding, style->border, style->border_color);
@@ -19614,19 +19721,20 @@ nk_do_button(nk_flags *state, struct nk_command_buffer *out, struct nk_rect r,
     /* execute button behavior */
     bounds.x = r.x - style->touch_padding.x;
     bounds.y = r.y - style->touch_padding.y;
-    bounds.w = r.w + 2 * style->touch_padding.x;
-    bounds.h = r.h + 2 * style->touch_padding.y;
+    bounds.w = r.w + style->touch_padding.x;
+    bounds.h = r.h  + style->touch_padding.y;
+    
     return nk_button_behavior(state, bounds, in, behavior);
 }
 NK_LIB void
 nk_draw_button_text(struct nk_command_buffer *out,
     const struct nk_rect *bounds, const struct nk_rect *content, nk_flags state,
     const struct nk_style_button *style, const char *txt, int len,
-    nk_flags text_alignment, const struct nk_user_font *font)
+    nk_flags text_alignment, const struct nk_user_font *font,float borderx,float bordery,float drawx,float drawy)
 {
     struct nk_text text;
     const struct nk_style_item *background;
-    background = nk_draw_button(out, bounds, state, style);
+    background = nk_draw_button(out, bounds, state, style,borderx,bordery,drawx,drawy);
 
     /* select correct colors/images */
     if (background->type == NK_STYLE_ITEM_COLOR)
@@ -19646,7 +19754,7 @@ nk_do_button_text(nk_flags *state,
     struct nk_command_buffer *out, struct nk_rect bounds,
     const char *string, int len, nk_flags align, enum nk_button_behavior behavior,
     const struct nk_style_button *style, const struct nk_input *in,
-    const struct nk_user_font *font)
+    const struct nk_user_font *font,float borderx,float bordery,float drawx,float drawy)
 {
     struct nk_rect content;
     int ret = nk_false;
@@ -19661,7 +19769,7 @@ nk_do_button_text(nk_flags *state,
 
     ret = nk_do_button(state, out, bounds, style, in, behavior, &content);
     if (style->draw_begin) style->draw_begin(out, style->userdata);
-    nk_draw_button_text(out, &bounds, &content, *state, style, string, len, align, font);
+    nk_draw_button_text(out, &bounds, &content, *state, style, string, len, align, font,borderx,bordery,drawx,drawy);
     if (style->draw_end) style->draw_end(out, style->userdata);
     return ret;
 }
@@ -19917,7 +20025,7 @@ nk_button_pop_behavior(struct nk_context *ctx)
 }
 NK_API int
 nk_button_text_styled(struct nk_context *ctx,
-    const struct nk_style_button *style, const char *title, int len)
+		      const struct nk_style_button *style, const char *title, int len,float borderx,float bordery,float drawx,float drawy)
 {
     struct nk_window *win;
     struct nk_panel *layout;
@@ -19940,7 +20048,7 @@ nk_button_text_styled(struct nk_context *ctx,
     in = (state == NK_WIDGET_ROM || layout->flags & NK_WINDOW_ROM) ? 0 : &ctx->input;
     return nk_do_button_text(&ctx->last_widget_state, &win->buffer, bounds,
                     title, len, style->text_alignment, ctx->button_behavior,
-                    style, in, ctx->style.font);
+			     style, in, ctx->style.font,borderx,bordery,drawx,drawy);
 }
 NK_API int
 nk_button_text(struct nk_context *ctx, const char *title, int len)
@@ -19957,6 +20065,9 @@ NK_API int nk_button_label_styled(struct nk_context *ctx,
 NK_API int nk_button_label(struct nk_context *ctx, const char *title)
 {
     return nk_button_text(ctx, title, nk_strlen(title));
+}
+NK_API int nk_button_sliced(struct nk_context* ctx ,const char* title,float borderx,float bordery,float drawx,float drawy){
+  return nk_button_text_styled(ctx, &ctx->style.button, title, nk_strlen(title),borderx,bordery,drawx,drawy);
 }
 NK_API int
 nk_button_color(struct nk_context *ctx, struct nk_color color)

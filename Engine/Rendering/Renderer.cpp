@@ -15,15 +15,19 @@ void Renderer::InnerSubmit(Sprite *input) {
 
   m_Buffer->position = input->vertices[0].position;
   m_Buffer->TexCoord = input->vertices[0].TexCoord;
+  m_Buffer->data = input->vertices[0].data;
   m_Buffer++;
   m_Buffer->position = input->vertices[1].position;
   m_Buffer->TexCoord = input->vertices[1].TexCoord;
+  m_Buffer->data = input->vertices[1].data;
   m_Buffer++;
   m_Buffer->position = input->vertices[2].position;
   m_Buffer->TexCoord = input->vertices[2].TexCoord;
+  m_Buffer->data = input->vertices[2].data;
   m_Buffer++;
   m_Buffer->position = input->vertices[3].position;
   m_Buffer->TexCoord = input->vertices[3].TexCoord;
+  m_Buffer->data = input->vertices[3].data;
   m_Buffer++;
   m_IndexCounter += 6;
 }
@@ -48,10 +52,9 @@ void Renderer::Init() {
     indices[i + 5] = (m_offset + 3);
     m_offset += 4;
   }
-  glGenVertexArrays(1, &m_VAO);
   glGenBuffers(1, &m_IBO);
   glGenBuffers(1, &m_VBO);
-
+  glGenVertexArrays(1, &m_VAO);
   glBindVertexArray(m_VAO);
   glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
   glBufferData(GL_ARRAY_BUFFER, BUFFERSIZE, NULL, GL_DYNAMIC_DRAW);
@@ -101,4 +104,6 @@ void Renderer::End() {
     it.second.clear();
   }
   RQ.clear();
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindVertexArray(0);
 }
