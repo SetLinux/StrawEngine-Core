@@ -26,3 +26,9 @@
 *.exe
 *.out
 *.app
+
+\.ccls-cache/
+
+\.vscode/
+
+build/

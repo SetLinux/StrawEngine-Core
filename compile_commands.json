@@ -1,0 +1,145 @@
+[
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/Engine/GUI/imgui.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/GUI/imgui.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/GUI/imgui.cpp"
+},
+
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/Engine/GUI/imgui_demo.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/GUI/imgui_demo.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/GUI/imgui_demo.cpp"
+},
+
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/Engine/GUI/imgui_draw.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/GUI/imgui_draw.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/GUI/imgui_draw.cpp"
+},
+
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/Engine/GUI/imgui_widgets.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/GUI/imgui_widgets.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/GUI/imgui_widgets.cpp"
+},
+
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/Engine/Utils/SNuklear.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Utils/SNuklear.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Utils/SNuklear.cpp"
+},
+
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/Engine/GUI/imgui_impl_opengl3.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/GUI/imgui_impl_opengl3.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/GUI/imgui_impl_opengl3.cpp"
+},
+
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/Engine/Physics/ContactListener.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Physics/ContactListener.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Physics/ContactListener.cpp"
+},
+
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/Engine/Addons/Sprite.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Addons/Sprite.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Addons/Sprite.cpp"
+},
+
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/Engine/GUI/GUISystem.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/GUI/GUISystem.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/GUI/GUISystem.cpp"
+},
+
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/Engine/Rendering/Animation.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Rendering/Animation.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Rendering/Animation.cpp"
+},
+
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/Engine/IO/Window.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/IO/Window.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/IO/Window.cpp"
+},
+
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/Engine/Game/Addon.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Game/Addon.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Game/Addon.cpp"
+},
+
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/Engine/Utils/ImageLoader.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Utils/ImageLoader.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Utils/ImageLoader.cpp"
+},
+
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/Engine/Addons/Animator.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Addons/Animator.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Addons/Animator.cpp"
+},
+
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/Engine/Addons/Physics.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Addons/Physics.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Addons/Physics.cpp"
+},
+
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/Engine/Rendering/FBO.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Rendering/FBO.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Rendering/FBO.cpp"
+},
+
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/Engine/Game/Game.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Game/Game.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Game/Game.cpp"
+},
+
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/Engine/Game/Camera.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Game/Camera.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Game/Camera.cpp"
+},
+
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/Engine/Rendering/Renderer.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Rendering/Renderer.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Rendering/Renderer.cpp"
+},
+
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/Engine/Rendering/Shader.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Rendering/Shader.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Rendering/Shader.cpp"
+},
+
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/Engine/Rendering/Texture.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Rendering/Texture.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Rendering/Texture.cpp"
+},
+
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/Engine/Physics/PhysicsSystem.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Physics/PhysicsSystem.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Physics/PhysicsSystem.cpp"
+},
+
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/Engine/Physics/RaycastHandler.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Physics/RaycastHandler.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/Physics/RaycastHandler.cpp"
+},
+
+{
+  "directory": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/build",
+  "command": "/usr/bin/c++  -DGLFW_DLL -I../libs/Box2D    -std=gnu++17 -o CMakeFiles/StrawEngine.dir/StrawEngine.cpp.o -c /home/mohamedmedhat/StrawEngine/StrawEngine-Core/StrawEngine.cpp",
+  "file": "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/StrawEngine.cpp"
+}
+]

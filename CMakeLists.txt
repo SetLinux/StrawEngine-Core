@@ -6,18 +6,16 @@ enable_testing()
 find_package(glfw3 REQUIRED)
 find_package(PkgConfig REQUIRED)
 find_package (Threads)
-set(CMAKE_MODULE_PATH "~/Desktop/StrawEngine/;${CMAKE_MODULE_PATH}")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 pkg_search_module(GLFW REQUIRED glfw3)
-pkg_search_module(BOX2D REQUIRED box2d)
+
 pkg_search_module(GLEW REQUIRED glew)
-pkg_search_module(GLM REQUIRED glm)
-pkg_search_module(SDL2 REQUIRED sdl2)
 add_executable(StrawEngine 
+
 Engine/GUI/imconfig.h
 Engine/GUI/imgui.cpp
 Engine/GUI/imgui_demo.cpp
@@ -34,9 +32,7 @@ Engine/Utils/nuklear_glfw_gl4.h
 Engine/Utils/SNuklear.h
 Engine/Utils/SNuklear.cpp
 Engine/GUI/imgui_impl_opengl3.h
-Engine/GUI/imgui_impl_sdl.h
 Engine/GUI/imgui_impl_opengl3.cpp
-Engine/GUI/imgui_impl_sdl.cpp
 
 Engine/Physics/ContactListener.h
 Engine/Physics/ContactListener.cpp
@@ -75,7 +71,10 @@ Engine/Physics/PhysicsSystem.cpp
 Engine/Physics/RaycastHandler.h
 Engine/Physics/RaycastHandler.cpp
 StrawEngine.cpp)
-target_link_libraries(StrawEngine PRIVATE CEGUIOpenGLRenderer-0  CEGUIBase-0 ${CEGUI_LIBRARIES} ${SDL2_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${GLM_LIBRARIES} ${GLFW_LIBRARIES} ${BOX2D_LIBRARIES} ${GLEW_LIBRARIES})
+
+target_include_directories(StrawEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/libs/Box2D/)
+
+target_link_libraries(StrawEngine PRIVATE   ${CMAKE_THREAD_LIBS_INIT} ${GLFW_LIBRARIES} ${CMAKE_CURRENT_SOURCE_DIR}/libs/Box2D/libBox2D.a ${GLEW_LIBRARIES})
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)

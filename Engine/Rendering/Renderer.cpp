@@ -104,6 +104,4 @@ void Renderer::End() {
     it.second.clear();
   }
   RQ.clear();
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
-  glBindVertexArray(0);
 }

@@ -20,7 +20,6 @@ public:
   Texture *tex;
   // Setting Position and Stuff :D
   void ApplyTransformation();
-  Shader *shdr;
   bool Static = false;
   glm::mat4 MVP;
   bool Visible = true;

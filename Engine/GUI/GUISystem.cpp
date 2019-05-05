@@ -6,7 +6,6 @@
 #define MAX_ELEMENT_MEMORY 128 * 1024
 
 std::function<void()> GUI::myDraw{[]() {}};
-double last_time_pulse = 0.001 * static_cast<double>(SDL_GetTicks());
 Game *GUI::gm;
 nk_context *GUI::ctx;
 nk_colorf GUI::bg;
@@ -23,7 +22,6 @@ void GUI::Init(Game *game, const std::string &ResPath) {
   nk_glfw3_font_stash_begin(&atlas);
   /*struct nk_font *droid = nk_font_atlas_add_from_file(atlas,
    * "../../../extra_font/DroidSans.ttf", 14, 0);*/
-roboto = nk_font_atlas_add_from_file(atlas,  "/home/mohamedmedhat/nuklear/nuklear/extra_font/kenvector_future_thin.ttf", 50, 0);
   /*struct nk_font *future = nk_font_atlas_add_from_file(atlas,
    * "../../../extra_font/kenvector_future_thin.ttf", 13, 0);*/
   /*struct nk_font *clean = nk_font_atlas_add_from_file(atlas,
@@ -33,7 +31,6 @@ roboto = nk_font_atlas_add_from_file(atlas,  "/home/mohamedmedhat/nuklear/nuklea
   /*struct nk_font *cousine = nk_font_atlas_add_from_file(atlas,
    * "../../../extra_font/Cousine-Regular.ttf", 13, 0);*/
   nk_glfw3_font_stash_end();
-  nk_style_set_font(ctx,&roboto->handle);
 }
 void GUI::LoadScheme(const std::string &schemeFile) {}
 void GUI::SetFont(const std::string &FontFile) {}

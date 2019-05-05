@@ -16,11 +16,13 @@
 class Window;
 struct ShaderBatch {
 public:
-  ShaderBatch(){
-    mySprites.reserve(200000);
+  ShaderBatch() { mySprites.reserve(200000); }
+  ~ShaderBatch() {
+    delete shdr;
   }
-  Shader* shdr;
+  Shader *shdr;
   std::vector<Sprite *> mySprites;
+  bool batch{true};
 };
 
 enum SortOrder { BackOrder, FrontOrder };
@@ -56,7 +58,6 @@ public:
  protected:
   Shader *shdr;
   std::vector<ShaderBatch *> shdrBatches;
-  Shader *screenShdr;
   FBO fbo;
   Renderer renderer;  
   ShaderBatch *MakeShaderBatch(Shader* shdr, SortOrder ordr);

@@ -26,7 +26,10 @@ void Sprite::OnUpdate(float dt, float alpha) {
     ApplyTransformation();
 }
 void Sprite::OnFixedUpdate(float dt) {}
-Sprite::~Sprite() {}
+Sprite::~Sprite() {
+
+
+}
 
 void Sprite::ApplyTransformation() {
 

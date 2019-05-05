@@ -16,9 +16,9 @@ Window::Window(int width, int height, std::string Title) {
   S_WIDTH = width;
   S_HEIGHT = height;
   m_title = Title;
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
-
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   m_window = glfwCreateWindow(width, height,Title.c_str(), NULL, NULL);
   glfwMakeContextCurrent(m_window);
   GLenum err = glewInit();
@@ -35,6 +35,9 @@ Window::Window(int width, int height, std::string Title) {
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glfwSetInputMode(m_window, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
   glfwSwapInterval(1);
+  if (!GLEW_ARB_bindless_texture) {
+    std::cout << "No Bindless Textures for your ass" << std::endl;
+  }
 }
 Window::~Window() {}
 void Window::Loop(Game *game) {
@@ -49,7 +52,7 @@ void Window::Loop(Game *game) {
   float lastTime = glfwGetTime(), timer = lastTime;
   float deltaTime = 0, nowTime = 0;
   int frames = 0, updates = 0;
-
+  
   bool Open = true;
   while (!glfwWindowShouldClose(m_window)) {
     glfwPollEvents();

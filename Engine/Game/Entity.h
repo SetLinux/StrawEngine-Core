@@ -11,10 +11,8 @@ public:
   ~Entity() {
 
     for (auto &it : m_Addons) {
-      if (it)
-        delete it;
+       delete it;
     }
-    m_Addons.clear();
   }
   // Vectors For Transformation
   X_Vector position{0, 0}, scale{0, 0};
@@ -36,8 +34,8 @@ public:
     assert(1);
     return NULL;
   };
+
   std::vector<Addon *> m_Addons;
-  void *Data = (void *)NULL;
   // ID mainly for sorting
   float ID = 0;
 

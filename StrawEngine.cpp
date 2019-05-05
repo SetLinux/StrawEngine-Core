@@ -18,8 +18,14 @@ class MyGame : public Game {
     Game *game;
     std::vector<Entity *> *enems;
     float timer = 0;
+    Shader* shdr;
+    unsigned int location;
+    void Assignme() {
+      location = shdr->getuniformloc("myfloat");
+    }
     void OnUpdate(float dt, float alpha) override {
       timer += dt;
+      shdr->SetFloatUniform(owner->ID,location);
       if (timer > 20.f) {
         for (std::vector<Entity *>::iterator it = enems->begin();
              it != enems->end(); it++) {
@@ -31,7 +37,8 @@ class MyGame : public Game {
         }
       }
     }
-
+    void SetMaData() {
+    }
     static int GetType() { return 12; };
     int myType() override { return 12; };
   };
@@ -48,13 +55,15 @@ class MyGame : public Game {
   void Start() override {
     srand(time(0));
     cursor = MakeSprite(X_Vector(0, 0, -1), X_Vector(25, 25), false);
-    cursor->GetAddon<Sprite>()->tex =
-        GetTexture("/home/mohamedmedhat/Desktop/StrawEngine/build/wall.jpg")
-            .get();
-    csshdr = new CustomShader("/home/mohamedmedhat/Desktop/StrawEngine/build/frag.fs","/home/mohamedmedhat/Desktop/StrawEngine/build/vert.vs");
+    TextureHandler texer = GetTexture("/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Assets/wall.jpg");
+    cursor->GetAddon<Sprite>()->tex = texer.get();
+    csshdr = new CustomShader("/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/"
+                    "Shaders/base.frag",
+                    "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/"
+                    "Shaders/base.vert");
     csshdr->Init();
-    shdrBatch = MakeShaderBatch(csshdr, SortOrder::BackOrder);
-        
+    shdrBatch = MakeShaderBatch(csshdr,SortOrder::FrontOrder);
+    shdrBatch->batch = false;
   }
   void Update(float dt) override {}
   void FixedUpdate(float dt) override {
@@ -66,14 +75,17 @@ class MyGame : public Game {
 
       int result = dist6(rng);
       EntityHandler Enemy =
-	MakeSprite(X_Vector(result, 400), X_Vector(128, 128),shdrBatch);
+  	MakeSprite(X_Vector(result, 400), X_Vector(128, 128),shdrBatch);
       Enemy->AddAddon<Physics>();
       Enemy->GetAddon<Sprite>()->tex =
-          GetTexture("/home/mohamedmedhat/Desktop/StrawEngine/build/minecraft.png")
+          GetTexture("/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Assets/wall.jpg")
               .get();
       Enemy->GetAddon<Sprite>()->SetTexBound(16 + 32,0,16,16);
       Enemy->AddAddon<Clickalbe>()->game = this;
       Enemy->GetAddon<Clickalbe>()->enems = &enemies;
+      Enemy->GetAddon<Clickalbe>()->shdr = csshdr;
+      Enemy->GetAddon<Clickalbe>()->Assignme();
+      
       enemies.emplace_back(Enemy);
       timer = 0;
     }
@@ -109,8 +121,7 @@ class MyGame : public Game {
       }
     }
     finale.z = 20;
-    cursor->position = finale;
-    
+    cursor->position = finale;    
   }
   void OnGUI() override{
     GUI::Label("SCORE : " + std::to_string(score));
