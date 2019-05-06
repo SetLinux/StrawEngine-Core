@@ -2,7 +2,7 @@
 #include <iostream>
 void FBO::CreateFBO(){
     glGenFramebuffers(1,&FBOID);
-    
+   
     glBindFramebuffer(GL_FRAMEBUFFER,FBOID);
     
     glGenTextures(1,&renderedTexture);

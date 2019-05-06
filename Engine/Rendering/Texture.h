@@ -12,7 +12,7 @@ public:
 //Acting Like A Getter
 inline unsigned int GetID(){return ID;};
 public:
-    Texture(std::string path);
+    Texture(const std::string& path);
     inline Texture(int ID){ this->ID = ID;};
     void Init();
     void Use();

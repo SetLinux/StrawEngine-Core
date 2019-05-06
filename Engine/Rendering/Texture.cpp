@@ -1,6 +1,6 @@
 #include "Texture.h"
 #include "../Utils/stb_image.h"
-Texture::Texture(std::string Path) : Width(0),Height(0){
+Texture::Texture(const std::string& Path) : Width(0),Height(0){
     this->_path = Path;
 }
 void Texture::Init(){

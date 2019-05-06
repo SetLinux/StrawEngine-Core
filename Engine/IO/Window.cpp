@@ -34,7 +34,7 @@ Window::Window(int width, int height, std::string Title) {
   //glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glfwSetInputMode(m_window, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
-  glfwSwapInterval(1);
+  glfwSwapInterval(0);
   if (!GLEW_ARB_bindless_texture) {
     std::cout << "No Bindless Textures for your ass" << std::endl;
   }
@@ -69,15 +69,16 @@ void Window::Loop(Game *game) {
     currentTime = newTime;
     accumulator += frameTime;
     while (accumulator >= dt) {
-    game->InnerFixedUpdate(dt);
-    t += dt;
-    accumulator -= dt;
-     
+      game->InnerFixedUpdate(dt);
+      t += dt;
+      accumulator -= dt;
+    
+    
+    }
     const float alpha = accumulator / dt;
     game->InnerUpdate(deltaTime, alpha);
     glfwSwapBuffers(m_window);
     deltaTime = 0;
-     
-    }
+    
   }
 }

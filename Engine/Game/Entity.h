@@ -5,37 +5,37 @@
 #include <iostream>
 #include <list>
 #include <vector>
-class Entity {
+#include <memory>
+class Entity : public std::enable_shared_from_this<Entity>{
 public:
   Entity() {}
-  ~Entity() {
-
-    for (auto &it : m_Addons) {
-       delete it;
-    }
-  }
+  ~Entity() {  }
   // Vectors For Transformation
   X_Vector position{0, 0}, scale{0, 0};
   float Rotation{0};
-  template <typename T> T *AddAddon() {
-    T *x = new T();
-    x->owner = (Entity *)this;
+  template <typename T> std::shared_ptr<T> AddAddon() {
+    std::shared_ptr<T> x = std::make_shared<T>();
+    std::shared_ptr<Entity> me = shared_from_this();
+    x->owner = me;
     x->OnCreate();
     m_Addons.push_back(x);
-    return x;
+    std::weak_ptr<T> weaker = (x);
+    std::shared_ptr<T> returned = weaker.lock();
+    return returned;
   };
 
-  template <typename T> T *GetAddon() {
+  template <typename T> std::shared_ptr<T> GetAddon() {
     for (int i = 0; i < m_Addons.size(); i++) {
       if ((m_Addons[i])->myType() == T::GetType()) {
-        return (T *)m_Addons[i];
+	std::weak_ptr<T> weaker = std::static_pointer_cast<T>(m_Addons[i]);
+	std::shared_ptr<T> returned = weaker.lock();
+	return returned;
       }
     }
     assert(1);
     return NULL;
   };
-
-  std::vector<Addon *> m_Addons;
+  std::vector<std::shared_ptr<Addon>> m_Addons;
   // ID mainly for sorting
   float ID = 0;
 

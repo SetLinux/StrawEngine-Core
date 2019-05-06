@@ -1,5 +1,6 @@
 #pragma once
-#define AddonBody(X)                                                           \
+#include <memory>
+#define AddonBody(X)							\
   void OnCreate() override;                                                    \
   void OnUpdate(float dt, float alpha) override;                               \
   void OnFixedUpdate(float dt) override;                                       \
@@ -28,5 +29,5 @@ public:
   virtual void OnFixedUpdate(float dt);
   virtual int myType() { return AddonType::None; };
   // virtual AddonType GetType(){return AddonType::None;};
-  Entity *owner;  
+  std::shared_ptr<Entity> owner;  
 };

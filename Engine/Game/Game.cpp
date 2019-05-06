@@ -10,12 +10,12 @@ Game::Game() {
 
 Game::~Game() {}
 
-Entity *Game::MakeSprite(X_Vector pos, X_Vector scale) {
-  Entity *ent = InnerMakeSprite(pos, scale);
+std::shared_ptr<Entity> Game::MakeSprite(X_Vector pos, X_Vector scale) {
+  EntityHandler ent = InnerMakeSprite(pos, scale);
   ent->AddAddon<Physics>();
   defaultBatch.mySprites.push_back(ent->GetAddon<Sprite>());
-
-  return ent;
+  std::weak_ptr<Entity> weaker = ent;
+  return weaker.lock();
 }
 void Game::AddToPhysicsQueue(std::function<void()> input) {
   FixedPhysicsQueue.push_back(input);
@@ -23,19 +23,20 @@ void Game::AddToPhysicsQueue(std::function<void()> input) {
 void Game::AddToUpdateQueue(std::function<void()> input) {
   UpdateQueue.push_back(input);
 }
-Entity *Game::MakeSprite(X_Vector pos, X_Vector scale, bool ePhysics) {
-  Entity *ent = InnerMakeSprite(pos, scale);
+std::shared_ptr<Entity> Game::MakeSprite(X_Vector pos, X_Vector scale, bool ePhysics) {
+  EntityHandler ent = InnerMakeSprite(pos, scale);
   if (ePhysics)
     ent->AddAddon<Physics>();
   defaultBatch.mySprites.push_back(ent->GetAddon<Sprite>());
-
-  return ent;
+  std::weak_ptr<Entity> weaker = ent;
+  return weaker.lock();
 }
 
-Entity *Game::MakeSprite(X_Vector pos, X_Vector scale, ShaderBatch *batch) {
-  Entity *ent = InnerMakeSprite(pos, scale);
+std::shared_ptr<Entity> Game::MakeSprite(X_Vector pos, X_Vector scale, ShaderBatch *batch) {
+  EntityHandler ent = InnerMakeSprite(pos, scale);
   batch->mySprites.push_back(ent->GetAddon<Sprite>());
-  return ent;
+  std::weak_ptr<Entity> weaker = ent;
+  return weaker.lock();
 }
 
 ShaderBatch *Game::MakeShaderBatch(Shader *shdr, SortOrder ordr) {
@@ -49,13 +50,16 @@ ShaderBatch *Game::MakeShaderBatch(Shader *shdr, SortOrder ordr) {
   }
   return sb;
 }
-void Game::DeleteEntitiy(Entity *e) {
-  for (int i = 0; i < shdrBatches.size(); i++) {
+void Game::DeleteEntity(std::shared_ptr<Entity> e) {
+  bool found = false;
+  for (int i = 0; i < shdrBatches.size() && !found; i++) {
     for (int f = 0; f < shdrBatches[i]->mySprites.size(); f++) {
       if (shdrBatches[i]->mySprites[f]->owner->ID == e->ID) {
         shdrBatches[i]->mySprites.erase(shdrBatches[i]->mySprites.begin() + f);
-        delete e;
-        break;
+        found = true;
+	e.reset();
+	std::cout << e.use_count() << std::endl;
+	break;
       }
     }
   }
@@ -104,26 +108,23 @@ void Game::InnerUpdate(float dt, float alpha) {
                                                                        alpha);
           }
           if (shdrBatches[i]->mySprites[f])
-            renderer.Submit((shdrBatches[i]->mySprites[f]));
+            renderer.Submit((shdrBatches[i]->mySprites[f].get()));
         }
       }
       renderer.End();
     } else {
-
-      
       for (int f = 0; f < shdrBatches[i]->mySprites.size(); f++) {
         if (shdrBatches[i]->mySprites[f]) {
-	  renderer.Begin();
-	  for (int y = 0;
+          renderer.Begin();
+          for (int y = 0;
                y < shdrBatches[i]->mySprites[f]->owner->m_Addons.size(); y++) {
             shdrBatches[i]->mySprites[f]->owner->m_Addons[y]->OnUpdate(dt,
                                                                        alpha);
           }
-	  renderer.Submit((shdrBatches[i]->mySprites[f]));
-	  renderer.End();
-	}
+          renderer.Submit((shdrBatches[i]->mySprites[f].get()));
+          renderer.End();
+        }
       }
-      
     }
   }
   GUI::BeginRender(dt);
@@ -157,9 +158,9 @@ std::shared_ptr<Texture> Game::GetTexture(std::string path) {
   tex->Init();
   return tex;
 }
-Entity *Game::InnerMakeSprite(X_Vector pos, X_Vector scale) {
+std::shared_ptr<Entity> Game::InnerMakeSprite(X_Vector pos, X_Vector scale) {
   IDCoutner++;
-  Entity *ent = new Entity();
+  std::shared_ptr<Entity> ent = std::make_shared<Entity>();
   ent->ID = IDCoutner;
   ent->position = pos;
   ent->scale = scale;

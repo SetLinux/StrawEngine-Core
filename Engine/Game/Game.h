@@ -13,6 +13,7 @@
 #include <vector>
 #include <list>
 #include <set>
+#include <memory>
 class Window;
 struct ShaderBatch {
 public:
@@ -21,14 +22,14 @@ public:
     delete shdr;
   }
   Shader *shdr;
-  std::vector<Sprite *> mySprites;
+  std::vector<std::shared_ptr<Sprite>> mySprites;
   bool batch{true};
 };
 
 enum SortOrder { BackOrder, FrontOrder };
 class Game {
 public:
-  typedef Entity *EntityHandler;
+  typedef std::shared_ptr<Entity> EntityHandler;
   typedef std::shared_ptr<Texture> TextureHandler;
   Game();
   ~Game();
@@ -42,13 +43,12 @@ public:
   void InnerFixedUpdate(float dt);
   void InnerRender(float dt,float alpha);
   // Makes texture if not loaded before if loaded before returns a reference to it
-  Entity *TesterBaby(int a);
   TextureHandler defTexture;
   Window *m_Window;
   EntityHandler MakeSprite(X_Vector, X_Vector);
   EntityHandler MakeSprite(X_Vector, X_Vector, bool);
   EntityHandler MakeSprite(X_Vector, X_Vector, ShaderBatch *batch);
-  void DeleteEntitiy(EntityHandler e);
+  void DeleteEntity(EntityHandler e);
   TextureHandler GetTexture(std::string path);
   std::vector<std::function<void()>> FixedPhysicsQueue;
   std::vector<std::function<void()>> UpdateQueue;

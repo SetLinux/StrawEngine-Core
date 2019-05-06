@@ -1,26 +1,7 @@
 #include "Shader.h"
 #include <string>
 #include "Renderer.h"
-std::string sdrsrc =
-    ("#version 420 core \n"
-     "layout (location = 0) in vec2 aPos;   \n" // the position variable has
-                                                // attribute position 0
-     "layout (location = 1) in vec2 aTexCoord; \n"
-     "out vec2 TexCord; \n"
-     "void main() \n"
-     "{ \n"
-     "    gl_Position = vec4(aPos.x,aPos.y, 0.0, 1.0); \n"
-     "    TexCord = aTexCoord; \n"
-     "};\n");
-std::string frgsrc = ("#version 420 core \n"
-                      "out vec4 FragColor; \n"
-                      "in vec2 TexCord; \n"
-                      "uniform sampler2D ourTexture;\n"
-                      "void main()\n"
-                      "{\n"
-                      "	FragColor = texture(ourTexture, TexCord);\n"
-                      "};\n");
-Shader::Shader(std::string FPath, std::string VPath)
+Shader::Shader(const std::string& FPath,const std::string& VPath)
     : FragShdr(0), VertShdr(0), ID(0) {
   _fragpath = FPath;
   _vertpath = VPath;

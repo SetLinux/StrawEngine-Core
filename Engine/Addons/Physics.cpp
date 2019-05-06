@@ -16,7 +16,7 @@ void Physics::OnCreate()
   bodyDef.position.Set(
 		       owner->position.x / PhysicsSystem::MPP,
 		       owner->position.y / PhysicsSystem::MPP);
-  bodyDef.userData = (void *)owner;
+  bodyDef.userData = (void *)owner.get();
   bodyDef.fixedRotation = true;
   
   m_body = PhysicsSystem::GetWorld()->CreateBody(&bodyDef);
