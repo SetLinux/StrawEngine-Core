@@ -18,15 +18,15 @@ public:
   static void UpdateGUIIO();
   static void BeginRender(float dt);
   static void EndRender();
-  static void SetFunction(std::function<void()> input) { myDraw = input; }
   static void LoadScheme(const std::string& schemeFile);
   static void SetFont(const std::string& fontFile);
-  static bool Button(X_Vector pos,X_Vector scale,const std::string& text);
+  static void StartRow(int width,int height,int columns);
+  static bool Button(const std::string& text);
   static void Label(const std::string& text);
+  static nk_context* ctx;
 private:
   static struct  nk_font *roboto;
   static std::function<void()> myDraw;
   static Game *gm;
-  static nk_context* ctx;
   static nk_colorf bg;
 };

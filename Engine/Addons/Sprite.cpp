@@ -4,20 +4,34 @@
 Sprite::Sprite() {}
 void Sprite::OnCreate() {
   vertices[0].position = X_Vector(-0.5f, 0.5f);
+  std::cout << "Created : " << vertices[0].position.z << std::endl;
   vertices[0].TexCoord = X_Vector(0.0f, 1.0f);
+
   vertices[1].position = X_Vector(0.5f, 0.5f);
+
   vertices[1].TexCoord = X_Vector(1.0f, 1.0f);
+
   vertices[2].position = X_Vector(0.5f, -0.5f);
+
   vertices[2].TexCoord = X_Vector(1.0f, 0.0f);
+
   vertices[3].position = X_Vector(-0.5f, -0.5f);
   vertices[3].TexCoord = X_Vector(0.0f, 0.0f);
+
   BackupVertices[0].position = X_Vector(-0.5f, 0.5f);
+
   BackupVertices[0].TexCoord = X_Vector(0.0f, 1.0f);
+
   BackupVertices[1].position = X_Vector(0.5f, 0.5f);
+
   BackupVertices[1].TexCoord = X_Vector(1.0f, 1.0f);
+
   BackupVertices[2].position = X_Vector(0.5f, -0.5f);
+
   BackupVertices[2].TexCoord = X_Vector(1.0f, 0.0f);
+
   BackupVertices[3].position = X_Vector(-0.5f, -0.5f);
+
   BackupVertices[3].TexCoord = X_Vector(0.0f, 0.0f);
 }
 
@@ -32,7 +46,7 @@ Sprite::~Sprite() {
 }
 
 void Sprite::ApplyTransformation() {
-
+  std::cout << "AT : " << vertices[0].position.z << std::endl;
   glm::mat4 model = glm::mat4(1.0f);
   model = glm::translate(
       model, X_Vector::ToVec<glm::vec3>(X_Vector(std::round(owner->position.x),
@@ -42,15 +56,18 @@ void Sprite::ApplyTransformation() {
   // model = glm::translate(model,
   // X_Vector::ToVec<glm::vec3>(owner->position,true));
   model = glm::rotate(model,glm::radians(owner->Rotation),glm::vec3(0.0,0.0,1.0f));
-  model = glm::scale(model, X_Vector::ToVec<glm::vec3>(owner->scale));
+  model = glm::scale(model, X_Vector::ToVec<glm::vec3>(owner->scale,true));
 
   MVP = Camera::main.Projection * Camera::main.getViewMatrix() * model;
   for (int i = 0; i < 4; i++) {
-    intern =
-        glm::vec4(BackupVertices[i].position.x, BackupVertices[i].position.y,
-                  BackupVertices[i].position.z, 1.0f);
 
-    res = MVP * intern;
+    glm::vec4 intern =  glm::vec4(BackupVertices[i].position.x, BackupVertices[i].position.y,
+                  BackupVertices[i].position.z, 1.0f);
+    std::cout << "finalX : " << intern.z << std::endl;
+
+    glm::vec4 res = MVP * intern;
+    std::cout << "final : " << res.z << std::endl;
+
     vertices[i].position = X_Vector::fromVec<glm::vec4>(res, true);
   }
 }

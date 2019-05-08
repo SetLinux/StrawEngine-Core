@@ -48,12 +48,14 @@ void inject_time_pulse(double &last) {
   // inject the time that passed since the last call
   
 }
-bool GUI::Button(X_Vector pos,X_Vector scale,const std::string& text){
-  nk_layout_row_static(ctx, scale.x, scale.y, 2);
+void GUI::StartRow(int width, int height, int columns) {
+  nk_layout_row_static(ctx, height,width, columns);
+}
+bool GUI::Button(const std::string& text){
   return nk_button_label(ctx,text.c_str());
 }
 void GUI::Label(const std::string &text){
-  nk_layout_row_static(ctx, 800,300, 2);
+  
   nk_label(ctx,text.c_str(),NK_TEXT_ALIGN_LEFT);
 }
 void GUI::EndRender() {

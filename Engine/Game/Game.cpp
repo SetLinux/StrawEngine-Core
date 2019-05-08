@@ -75,7 +75,9 @@ void Game::OnGUI() {}
 
 void Game::InnerInit() {
   PhysicsSystem::Init();
+  ScriptingSystem::Init(this);
   GUI::Init(this, "/home/mohamedmedhat/Desktop/StrawEngine/GUI");
+  
   GUI::LoadScheme("WindowsLook.scheme");
   GUI::SetFont("DejaVuSans-10");
   // button->setText("BABY");
@@ -166,4 +168,8 @@ std::shared_ptr<Entity> Game::InnerMakeSprite(X_Vector pos, X_Vector scale) {
   ent->scale = scale;
   ent->AddAddon<Sprite>();
   return ent;
+}
+
+bool Game::IsKeyDown(int key){
+  return glfwGetKey(m_Window->m_window,key) == GLFW_PRESS;
 }

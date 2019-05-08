@@ -19,7 +19,8 @@ enum AddonType {
   None,
   SpriteAddon ,
   AnimationAddon,
-  PhysicsAddon 
+  PhysicsAddon,
+  ScriptAddon
 };
 class Addon {
 public:
