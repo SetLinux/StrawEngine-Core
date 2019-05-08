@@ -1,4 +1,5 @@
 #pragma once
+#include "../Scripting/ScriptingSystem.h"
 #include "../Addons/Physics.h"
 #include "../Addons/Sprite.h"
 #include "../Game/Entity.h"
@@ -54,8 +55,9 @@ public:
   std::vector<std::function<void()>> UpdateQueue;
   void AddToPhysicsQueue(std::function<void()> input);
   void AddToUpdateQueue(std::function<void()> input);
-  int IDCoutner = 0;
- protected:
+  bool IsKeyDown(int key);
+
+protected:
   Shader *shdr;
   std::vector<ShaderBatch *> shdrBatches;
   FBO fbo;
@@ -69,5 +71,6 @@ private:
   std::unordered_map<std::string, TextureHandler> m_TexturesList;
   ShaderBatch defaultBatch;
   float teset;
+  int IDCoutner = 0;
   
 };

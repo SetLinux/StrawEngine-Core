@@ -6,15 +6,16 @@
 #include <list>
 #include <vector>
 #include <memory>
+#include <cstdarg>
 class Entity : public std::enable_shared_from_this<Entity>{
 public:
   Entity() {}
   ~Entity() {  }
   // Vectors For Transformation
-  X_Vector position{0, 0}, scale{0, 0};
+  X_Vector position{0, 0,0}, scale{0, 0,0};
   float Rotation{0};
-  template <typename T> std::shared_ptr<T> AddAddon() {
-    std::shared_ptr<T> x = std::make_shared<T>();
+  template <typename T,typename... Args> std::shared_ptr<T> AddAddon(Args... args) {
+    std::shared_ptr<T> x = std::make_shared<T>(args...);
     std::shared_ptr<Entity> me = shared_from_this();
     x->owner = me;
     x->OnCreate();

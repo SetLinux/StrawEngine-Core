@@ -5,6 +5,8 @@ include(CTest)
 enable_testing()
 find_package(glfw3 REQUIRED)
 find_package(PkgConfig REQUIRED)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/")
+find_package(Lua53 REQUIRED)
 find_package (Threads)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -26,18 +28,23 @@ Engine/GUI/imgui_widgets.cpp
 Engine/GUI/imstb_rectpack.h
 Engine/GUI/imstb_textedit.h
 Engine/GUI/imstb_truetype.h
-
 Engine/Utils/nuklear.h
 Engine/Utils/nuklear_glfw_gl4.h
 Engine/Utils/SNuklear.h
 Engine/Utils/SNuklear.cpp
 Engine/GUI/imgui_impl_opengl3.h
 Engine/GUI/imgui_impl_opengl3.cpp
-
+Engine/Utils/sol.hpp
 Engine/Physics/ContactListener.h
 Engine/Physics/ContactListener.cpp
 Engine/Addons/Sprite.h
 Engine/Addons/Sprite.cpp
+Engine/Scripting/ScriptingSystem.h
+Engine/Scripting/ScriptingSystem.cpp
+
+Engine/Addons/Script.h
+Engine/Addons/Script.cpp
+
 Engine/GUI/GUISystem.cpp
 Engine/Rendering/Animation.h
 Engine/Rendering/Animation.cpp
@@ -74,7 +81,7 @@ StrawEngine.cpp)
 
 target_include_directories(StrawEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/libs/Box2D/)
 
-target_link_libraries(StrawEngine PRIVATE   ${CMAKE_THREAD_LIBS_INIT} ${GLFW_LIBRARIES} ${CMAKE_CURRENT_SOURCE_DIR}/libs/Box2D/libBox2D.a ${GLEW_LIBRARIES})
+target_link_libraries(StrawEngine PRIVATE  ${LUA53_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${GLFW_LIBRARIES} ${CMAKE_CURRENT_SOURCE_DIR}/libs/Box2D/libBox2D.a ${GLEW_LIBRARIES})
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)

@@ -1,3 +1,4 @@
+#pragma once
 #include "../Game/Addon.h"
 #include "../Math/Math.h"
 #include <Box2D/Box2D.h>

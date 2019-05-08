@@ -17,21 +17,15 @@ public:
 
 public:
   Vertex vertices[4];
-  Texture *tex;
+  std::shared_ptr<Texture> tex;
   // Setting Position and Stuff :D
   void ApplyTransformation();
   bool Static = false;
   glm::mat4 MVP;
   bool Visible = true;
   void SetTexBound(float x,float y,float width, float height);
-  void SetVerticesData(void *data){
-    for(int i =0; i < 4; i++){
-      vertices[i].data = data;
-      BackupVertices[i].data = data;
-    }
-  };
-
+  
 private:
-  glm::vec4 res, intern;
+  glm::vec4 res;
   Vertex BackupVertices[4];
 };

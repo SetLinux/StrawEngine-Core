@@ -13,6 +13,7 @@ public:
   GLFWwindow *m_window;
   static int S_HEIGHT, S_WIDTH;
   Uint8 *state;
+  
   double mousexpos,mouseypos;
   nk_context* ctx;
 private:

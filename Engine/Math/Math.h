@@ -91,7 +91,7 @@ struct X_Vector {
   }
   static float Distance(X_Vector pointa, X_Vector pointb) {
     float undersqrt =
-        std::pow(pointb.x - pointa.x, 2) + std::pow(pointb.y - pointa.y, 2);
+      std::pow(pointb.x - pointa.x, 2) + std::pow(pointb.y - pointa.y, 2);
     float result = std::sqrt(undersqrt);
     return result;
   }
@@ -115,7 +115,6 @@ inline std::ostream &operator<<(std::ostream &os, const X_Vector &vec) {
 template <typename T> inline X_Vector X_Vector::fromVec(T other, bool zExist) {
   return X_Vector(other.x, other.y, zExist ? other.z : 0);
 }
-
 // Just Some Template Work
 template <class T> T X_Vector::ToVec(X_Vector other) {
   T x;
@@ -131,5 +130,4 @@ template <typename T> inline X_Vector X_Vector::fromVec(T other) {
 struct Vertex {
   X_Vector position;
   X_Vector TexCoord;
-  void* data;
 };
