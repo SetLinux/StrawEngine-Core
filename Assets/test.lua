@@ -1,12 +1,11 @@
+
 local starter = function ()
-   texture = owner:GetSpriteAddon().Texture
-   test = X_Vector.new(1,1)
-   test = test +4
-   print (test.x)
-   print("TEST")
+
 end
 
 local updater = function()
+   owner.position = (owner.position - X_Vector.new(8,0))   
+   owner.scale = (owner.scale + X_Vector.new(0.5,0.5))
 end
 
 local fixedupdater = function()
@@ -14,8 +13,8 @@ local fixedupdater = function()
 end
 
 
-local result = {}
-result["Start"] = starter
-result["Update"] = updater
-result["FixedUpdate"] = fixedupdater
+result = {}
+result["OnCreate"] = starter
+result["OnUpdate"] = updater
+result["OnFixedUpdate"] = fixedupdater
 return result

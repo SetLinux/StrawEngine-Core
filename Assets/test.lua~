@@ -1,10 +1,7 @@
 local starter = function ()
-   mytex = CreateTexture("/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Assets/wall.jpg")
-   mytex:Init()
-   tester =  owner.GetSpriteAddon().Texture
+   texture = owner:GetSpriteAddon().Texture
    test = X_Vector.new(1,1)
    test = test +4
-   
    print (test.x)
    print("TEST")
 end
@@ -13,7 +10,7 @@ local updater = function()
 end
 
 local fixedupdater = function()
-      owner.Position = owner.Position + 0.1     
+           
 end
 
 

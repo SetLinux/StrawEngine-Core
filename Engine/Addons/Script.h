@@ -1,5 +1,5 @@
 #pragma once
-#include "../Scripting/ScriptingSystem.h"
+#include <iostream>
 #include "../Game/Addon.h"
 class Script : public Addon{
  public:
@@ -8,10 +8,10 @@ class Script : public Addon{
 
 public:
   AddonBody(AddonType::ScriptAddon);
-
+  
 private:
+  sol::function create,update,fixedupdate;
   std::string m_path;
-  sol::function Start;
-  sol::function Update;
-  sol::function FixedUpdate;
 };
+
+  

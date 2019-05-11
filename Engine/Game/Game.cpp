@@ -23,7 +23,8 @@ void Game::AddToPhysicsQueue(std::function<void()> input) {
 void Game::AddToUpdateQueue(std::function<void()> input) {
   UpdateQueue.push_back(input);
 }
-std::shared_ptr<Entity> Game::MakeSprite(X_Vector pos, X_Vector scale, bool ePhysics) {
+std::shared_ptr<Entity> Game::MakeSprite(X_Vector pos, X_Vector scale,
+                                         bool ePhysics) {
   EntityHandler ent = InnerMakeSprite(pos, scale);
   if (ePhysics)
     ent->AddAddon<Physics>();
@@ -32,7 +33,8 @@ std::shared_ptr<Entity> Game::MakeSprite(X_Vector pos, X_Vector scale, bool ePhy
   return weaker.lock();
 }
 
-std::shared_ptr<Entity> Game::MakeSprite(X_Vector pos, X_Vector scale, ShaderBatch *batch) {
+std::shared_ptr<Entity> Game::MakeSprite(X_Vector pos, X_Vector scale,
+                                         ShaderBatch *batch) {
   EntityHandler ent = InnerMakeSprite(pos, scale);
   batch->mySprites.push_back(ent->GetAddon<Sprite>());
   std::weak_ptr<Entity> weaker = ent;
@@ -57,9 +59,9 @@ void Game::DeleteEntity(std::shared_ptr<Entity> e) {
       if (shdrBatches[i]->mySprites[f]->owner->ID == e->ID) {
         shdrBatches[i]->mySprites.erase(shdrBatches[i]->mySprites.begin() + f);
         found = true;
-	e.reset();
-	std::cout << e.use_count() << std::endl;
-	break;
+        e.reset();
+        std::cout << e.use_count() << std::endl;
+        break;
       }
     }
   }
@@ -75,9 +77,10 @@ void Game::OnGUI() {}
 
 void Game::InnerInit() {
   PhysicsSystem::Init();
-  ScriptingSystem::Init(this);
+  ScriptingSystem::Init();
+  SetUpLuaBinding();
   GUI::Init(this, "/home/mohamedmedhat/Desktop/StrawEngine/GUI");
-  
+
   GUI::LoadScheme("WindowsLook.scheme");
   GUI::SetFont("DejaVuSans-10");
   // button->setText("BABY");
@@ -170,6 +173,42 @@ std::shared_ptr<Entity> Game::InnerMakeSprite(X_Vector pos, X_Vector scale) {
   return ent;
 }
 
-bool Game::IsKeyDown(int key){
-  return glfwGetKey(m_Window->m_window,key) == GLFW_PRESS;
+bool Game::IsKeyDown(int key) {
+  return glfwGetKey(m_Window->m_window, key) == GLFW_PRESS;
+}
+void Game::SetUpLuaBinding() {
+  ScriptingSystem::LuaRegisterClass<X_Vector>("X_Vector",
+                                              sol::constructors<X_Vector(float,float),X_Vector(float,float,float)>(),"x",&X_Vector::x,"y",&X_Vector::y);
+
+
+  ScriptingSystem::AddMember(
+      "X_Vector", sol::meta_method::addition,
+      sol::overload([](const X_Vector &self,
+                       const X_Vector &other) { return self + other; },
+                    [](const X_Vector &self, const float other) {
+                      return self + other;
+                    }));
+  ScriptingSystem::AddMember(
+      "X_Vector", sol::meta_method::subtraction,
+      sol::overload([](const X_Vector &self,
+                       const X_Vector &other) { return self - other; },
+                    [](const X_Vector &self, const float other) {
+                      return self - other;
+                    }));
+  ScriptingSystem::AddMember(
+      "X_Vector", sol::meta_method::multiplication,
+      sol::overload([](const X_Vector &self,
+                       const X_Vector &other) { return self * other; },
+                    [](const X_Vector &self, const float other) {
+                      return self * other;
+                    }));
+  ScriptingSystem::AddMember(
+      "X_Vector", sol::meta_method::division,
+      sol::overload([](const X_Vector &self,
+                       const X_Vector &other) { return self / other; },
+                    [](const X_Vector &self, const float other) {
+                      return self / other;
+                    }));
+
+  ScriptingSystem::LuaRegisterClass<Entity>("Entity", sol::constructors<>(),"position",&Entity::position,"scale",&Entity::scale);
 }

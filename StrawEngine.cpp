@@ -18,10 +18,11 @@ class MyGame : public Game {
   void Start() override {
      me = MakeSprite(X_Vector(500,0), X_Vector(100,100),false);
      me->GetAddon<Sprite>()->tex = GetTexture("/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Assets/wall.jpg");
-     
+     me->AddAddon<Script>("/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Assets/test.lua");
      
   }
   void Update(float dt) override {
+    
   }
   void FixedUpdate(float dt) override {
   }

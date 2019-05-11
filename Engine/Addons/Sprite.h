@@ -5,6 +5,7 @@
 #include "../Rendering/Shader.h"
 #include "../Rendering/Texture.h"
 #include <Box2D/Box2D.h>
+
 class Sprite : public Addon {
 public:
   Sprite();
@@ -24,7 +25,7 @@ public:
   glm::mat4 MVP;
   bool Visible = true;
   void SetTexBound(float x,float y,float width, float height);
-  
+  static void LuaBinding();
 private:
   glm::vec4 res;
   Vertex BackupVertices[4];

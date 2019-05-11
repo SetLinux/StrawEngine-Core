@@ -34,7 +34,7 @@ public:
   typedef std::shared_ptr<Texture> TextureHandler;
   Game();
   ~Game();
-
+  
   virtual void Start();
   virtual void Update(float dt);
   virtual void FixedUpdate(float dt);
@@ -72,5 +72,5 @@ private:
   ShaderBatch defaultBatch;
   float teset;
   int IDCoutner = 0;
-  
+  void SetUpLuaBinding();
 };

@@ -38,6 +38,7 @@ void Sprite::OnCreate() {
 void Sprite::OnUpdate(float dt, float alpha) {
   if (!Static)
     ApplyTransformation();
+  
 }
 void Sprite::OnFixedUpdate(float dt) {}
 Sprite::~Sprite() {
@@ -46,7 +47,6 @@ Sprite::~Sprite() {
 }
 
 void Sprite::ApplyTransformation() {
-  std::cout << "AT : " << vertices[0].position.z << std::endl;
   glm::mat4 model = glm::mat4(1.0f);
   model = glm::translate(
       model, X_Vector::ToVec<glm::vec3>(X_Vector(std::round(owner->position.x),
@@ -63,14 +63,13 @@ void Sprite::ApplyTransformation() {
 
     glm::vec4 intern =  glm::vec4(BackupVertices[i].position.x, BackupVertices[i].position.y,
                   BackupVertices[i].position.z, 1.0f);
-    std::cout << "finalX : " << intern.z << std::endl;
 
     glm::vec4 res = MVP * intern;
-    std::cout << "final : " << res.z << std::endl;
 
     vertices[i].position = X_Vector::fromVec<glm::vec4>(res, true);
   }
 }
+
 void Sprite::SetTexBound(float x,float y,float w,float h){
   float texX = x / tex->Width;
   float texY = 1 - (y / tex->Height);
@@ -81,4 +80,8 @@ void Sprite::SetTexBound(float x,float y,float w,float h){
   vertices[1].TexCoord = X_Vector(texX + texW,texY);
   vertices[2].TexCoord = X_Vector(texX + texW, texY - texH);
   vertices[3].TexCoord = X_Vector(texX  , texY - texH);
+}
+void Sprite::LuaBinding() {
+  ScriptingSystem::LuaRegisterClass<Sprite>("Sprite",sol::constructors<>());
+  ScriptingSystem::AddMember("Sprite","Texture",&Sprite::tex);
 }
