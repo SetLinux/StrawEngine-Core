@@ -1,11 +1,14 @@
-
 local starter = function ()
-
+   local texture = GetTexture("/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Assets/terrain.png");
+   texture:Init()
+   owner.position = X_Vector.new(0,0)
+   owner:GetSpriteAddon().Texture = texture
+   owner:GetSpriteAddon():SetTexCoords(32+16,0,16,16)
+   
 end
 
 local updater = function()
-   owner.position = (owner.position - X_Vector.new(8,0))   
-   owner.scale = (owner.scale + X_Vector.new(0.5,0.5))
+   
 end
 
 local fixedupdater = function()

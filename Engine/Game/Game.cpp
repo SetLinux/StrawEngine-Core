@@ -161,6 +161,7 @@ std::shared_ptr<Texture> Game::GetTexture(std::string path) {
   std::shared_ptr<Texture> tex = std::make_shared<Texture>(path);
   m_TexturesList[path] = tex;
   tex->Init();
+  LOG("[*] Loaded a Texture Succefully : " + path);
   return tex;
 }
 std::shared_ptr<Entity> Game::InnerMakeSprite(X_Vector pos, X_Vector scale) {
@@ -177,17 +178,25 @@ bool Game::IsKeyDown(int key) {
   return glfwGetKey(m_Window->m_window, key) == GLFW_PRESS;
 }
 void Game::SetUpLuaBinding() {
-  ScriptingSystem::LuaRegisterClass<X_Vector>("X_Vector",
-                                              sol::constructors<X_Vector(float,float),X_Vector(float,float,float)>(),"x",&X_Vector::x,"y",&X_Vector::y);
-
-
+  ScriptingSystem::LuaRegisterClass<X_Vector>(
+      "X_Vector",
+      sol::constructors<X_Vector(float, float),
+                        X_Vector(float, float, float)>(),
+      "x", &X_Vector::x, "y", &X_Vector::y);
+  ScriptingSystem::LuaRegisterClass<Texture>("Texture", sol::constructors<>(),
+                                             "Init", &Texture::Init);
+  ScriptingSystem::LuaRegisterClass<Sprite>("Sprite", sol::constructors<>(),
+                                            "Texture", &Sprite::tex,"SetTexCoords",&Sprite::SetTexBound);
+  ScriptingSystem::luastate["GetTexture"] =
+    [this](const std::string& path) {return this->GetTexture(path);};
+  
   ScriptingSystem::AddMember(
-      "X_Vector", sol::meta_method::addition,
-      sol::overload([](const X_Vector &self,
-                       const X_Vector &other) { return self + other; },
-                    [](const X_Vector &self, const float other) {
-                      return self + other;
-                    }));
+          "X_Vector", sol::meta_method::addition,
+          sol::overload([](const X_Vector &self,
+                           const X_Vector &other) { return self + other; },
+                        [](const X_Vector &self, const float other) {
+                          return self + other;
+                        }));
   ScriptingSystem::AddMember(
       "X_Vector", sol::meta_method::subtraction,
       sol::overload([](const X_Vector &self,
@@ -210,5 +219,10 @@ void Game::SetUpLuaBinding() {
                       return self / other;
                     }));
 
-  ScriptingSystem::LuaRegisterClass<Entity>("Entity", sol::constructors<>(),"position",&Entity::position,"scale",&Entity::scale);
+  ScriptingSystem::LuaRegisterClass<Entity>("Entity", sol::constructors<>(),
+                                            "position", &Entity::position,
+                                            "scale", &Entity::scale);
+  ScriptingSystem::AddMember("Entity", "GetSpriteAddon", [](Entity &self) {
+    return self.GetAddon<Sprite>();
+  });
 }

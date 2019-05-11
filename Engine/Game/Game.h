@@ -1,4 +1,5 @@
 #pragma once
+#include "../Utils/LogSystem.h"
 #include "../Scripting/ScriptingSystem.h"
 #include "../Addons/Physics.h"
 #include "../Addons/Sprite.h"
