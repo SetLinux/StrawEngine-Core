@@ -43,6 +43,9 @@ void GUI::UpdateGUIIO() {
 void GUI::BeginRender(float dt) {
   ctx->style.window.fixed_background = nk_style_item_hide();
   nk_begin(ctx, "Demo", nk_rect(0, 0, 1000,1000),NK_WINDOW_NO_SCROLLBAR);
+  struct nk_rect total_space = nk_window_get_content_region(GUI::ctx);
+  nk_layout_space_begin(ctx, NK_STATIC, total_space.h, 1000);
+    
 }
 void inject_time_pulse(double &last) {
   // inject the time that passed since the last call
@@ -51,7 +54,8 @@ void inject_time_pulse(double &last) {
 void GUI::StartRow(int width, int height, int columns) {
   nk_layout_row_static(ctx, height,width, columns);
 }
-bool GUI::Button(const std::string& text){
+bool GUI::Button(const std::string& text,float x,float y ,float w, float h){
+  nk_layout_space_push(GUI::ctx, nk_rect(x, y, w, h));
   return nk_button_label(ctx,text.c_str());
 }
 void GUI::Label(const std::string &text){
@@ -59,6 +63,7 @@ void GUI::Label(const std::string &text){
   nk_label(ctx,text.c_str(),NK_TEXT_ALIGN_LEFT);
 }
 void GUI::EndRender() {
+  nk_layout_space_end(ctx);
   nk_end(ctx);
   nk_glfw3_render(NK_ANTI_ALIASING_ON, 3000000, 300000);
 

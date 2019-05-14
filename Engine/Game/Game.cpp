@@ -187,6 +187,9 @@ void Game::SetUpLuaBinding() {
                                              "Init", &Texture::Init);
   ScriptingSystem::LuaRegisterClass<Sprite>("Sprite", sol::constructors<>(),
                                             "Texture", &Sprite::tex,"SetTexCoords",&Sprite::SetTexBound);
+  ScriptingSystem::LuaRegisterClass<Physics>("Physics", sol::constructors<>(),
+                                             "Gravity", sol::property(&Physics::GetGravityScale,&Physics::SetGravity));
+  
   ScriptingSystem::luastate["GetTexture"] =
     [this](const std::string& path) {return this->GetTexture(path);};
   
@@ -221,8 +224,13 @@ void Game::SetUpLuaBinding() {
 
   ScriptingSystem::LuaRegisterClass<Entity>("Entity", sol::constructors<>(),
                                             "position", &Entity::position,
-                                            "scale", &Entity::scale);
+                                            "scale", &Entity::scale,
+					    "rotation",&Entity::Rotation);
   ScriptingSystem::AddMember("Entity", "GetSpriteAddon", [](Entity &self) {
     return self.GetAddon<Sprite>();
   });
+  ScriptingSystem::AddMember("Entity", "GetPhysicsAddon", [](Entity &self) {
+    return self.GetAddon<Physics>();
+  });
+  
 }

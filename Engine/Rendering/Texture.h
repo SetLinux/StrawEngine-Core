@@ -12,12 +12,12 @@ public:
 //Acting Like A Getter
 inline unsigned int GetID(){return ID;};
 public:
-    Texture(const std::string& path);
-    inline Texture(int ID){ this->ID = ID;};
-    void Init();
-    void Use();
-    float Width,Height;
+  Texture(const std::string& path);
+  inline Texture(int ID){ this->ID = ID;};
+  void Init();
+  void Use();
+  float Width,Height;
 private:
-    unsigned int ID;
-    std::string _path;
+  unsigned int ID;
+  std::string _path;
 };

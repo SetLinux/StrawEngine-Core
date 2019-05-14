@@ -21,7 +21,7 @@ public:
   static void LoadScheme(const std::string& schemeFile);
   static void SetFont(const std::string& fontFile);
   static void StartRow(int width,int height,int columns);
-  static bool Button(const std::string& text);
+  static bool Button(const std::string& text,float x,float y,float w,float h);
   static void Label(const std::string& text);
   static nk_context* ctx;
 private:

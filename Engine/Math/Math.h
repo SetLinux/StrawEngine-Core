@@ -76,12 +76,12 @@ struct X_Vector {
     glm::vec4 endtemp = temp * other;
     return X_Vector(endtemp.x, endtemp.y);
   }
-  template <typename T> static X_Vector fromVec(T other, bool zExist);
-  template <class T> static X_Vector fromVec(T other);
-  template <typename T> static T ToVec(X_Vector other, bool zExist);
-  template <typename T> static T ToVec(X_Vector other);
+  template <typename T> static X_Vector fromVec(const T& other, bool zExist);
+  template <class T> static X_Vector fromVec(const T& other);
+  template <typename T> static T ToVec(const X_Vector& other, bool zExist);
+  template <typename T> static T ToVec(const X_Vector& other);
 
-  static X_Vector Interpolate(X_Vector previous, X_Vector current,
+  static X_Vector Interpolate(const X_Vector& previous, const X_Vector& current,
                               float alpha) {
     // state = currentState * alpha + previousState * (1-alpha)
     X_Vector res(0, 0, 0);
@@ -89,7 +89,7 @@ struct X_Vector {
     res = (current * alpha) + (previous * (oneMinusRatio));
     return res;
   }
-  static float Distance(X_Vector pointa, X_Vector pointb) {
+  static float Distance(const X_Vector& pointa, const X_Vector& pointb) {
     float undersqrt =
       std::pow(pointb.x - pointa.x, 2) + std::pow(pointb.y - pointa.y, 2);
     float result = std::sqrt(undersqrt);
@@ -98,7 +98,7 @@ struct X_Vector {
  
 };
 // Just Some Template Work
-template <class T> T X_Vector::ToVec(X_Vector other, bool zExist) {
+template <class T> T X_Vector::ToVec(const X_Vector& other, bool zExist) {
   T x;
   x.x = other.x;
   x.y = other.y;
@@ -112,18 +112,18 @@ inline std::ostream &operator<<(std::ostream &os, const X_Vector &vec) {
   return os;
 }
 
-template <typename T> inline X_Vector X_Vector::fromVec(T other, bool zExist) {
+template <typename T> inline X_Vector X_Vector::fromVec(const T& other, bool zExist) {
   return X_Vector(other.x, other.y, zExist ? other.z : 0);
 }
 // Just Some Template Work
-template <class T> T X_Vector::ToVec(X_Vector other) {
+template <class T> T X_Vector::ToVec(const X_Vector& other) {
   T x;
   x.x = other.x;
   x.y = other.y;
   return x;
 }
 
-template <typename T> inline X_Vector X_Vector::fromVec(T other) {
+template <typename T> inline X_Vector X_Vector::fromVec(const T& other) {
   return X_Vector(other.x, other.y, 0);
 }
 

@@ -10,7 +10,8 @@ find_package(Lua53 REQUIRED)
 find_package (Threads)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
+SET(CMAKE_C_COMPILER clang)
+SET(CMAKE_CXX_COMPILER clang++)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 pkg_search_module(GLFW REQUIRED glfw3)
@@ -79,7 +80,7 @@ Engine/Physics/RaycastHandler.h
 Engine/Physics/RaycastHandler.cpp
 StrawEngine.cpp)
 
-target_include_directories(StrawEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/libs/Box2D/)
+target_include_directories(StrawEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/libs/)
 
 target_link_libraries(StrawEngine PRIVATE  ${LUA53_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${GLFW_LIBRARIES} ${CMAKE_CURRENT_SOURCE_DIR}/libs/Box2D/libBox2D.a ${GLEW_LIBRARIES})
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})

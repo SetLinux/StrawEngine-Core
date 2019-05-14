@@ -56,8 +56,8 @@ void Sprite::ApplyTransformation() {
   // model = glm::translate(model,
   // X_Vector::ToVec<glm::vec3>(owner->position,true));
   model = glm::rotate(model,glm::radians(owner->Rotation),glm::vec3(0.0,0.0,1.0f));
-  model = glm::scale(model, X_Vector::ToVec<glm::vec3>(owner->scale,true));
-
+  model = glm::scale(model, X_Vector::ToVec<glm::vec3>(owner->scale + X_Vector(0,0,1),true));
+  
   MVP = Camera::main.Projection * Camera::main.getViewMatrix() * model;
   for (int i = 0; i < 4; i++) {
 

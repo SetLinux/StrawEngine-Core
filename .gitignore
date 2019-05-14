@@ -32,3 +32,5 @@
 \.vscode/
 
 build/
+
+*.cpp#

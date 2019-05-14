@@ -60,9 +60,9 @@ void Renderer::Init() {
                GL_STATIC_DRAW);
   glEnableVertexAttribArray(0);
   glEnableVertexAttribArray(1);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)(offsetof(Vertex,Vertex::position)));
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)0);
   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-                        (void *)offsetof(Vertex, Vertex::TexCoord));
+                        (void *)sizeof(X_Vector));
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 }

@@ -1,6 +1,5 @@
 #include "Physics.h"
 #include "../Game/Entity.h"
-#include "../Physics/PhysicsSystem.h"
 Physics::Physics()
 {
 
@@ -19,6 +18,7 @@ void Physics::OnCreate()
   bodyDef.userData = (void *)owner.get();
   bodyDef.fixedRotation = true;
   
+
   m_body = PhysicsSystem::GetWorld()->CreateBody(&bodyDef);
   b2PolygonShape shape;
   shape.SetAsBox(
@@ -31,6 +31,7 @@ void Physics::OnCreate()
   fixtureDef.restitution = 0.0f;
   m_body->CreateFixture(&fixtureDef);
   m_body->GetFixtureList()->SetFriction(0.0f);
+
 }
 void Physics::OnUpdate(float dt, float alpha)
 {

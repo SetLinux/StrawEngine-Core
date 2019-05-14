@@ -8,7 +8,7 @@ local starter = function ()
 end
 
 local updater = function()
-   
+   owner.rotation = owner.rotation + 0.1
 end
 
 local fixedupdater = function()
