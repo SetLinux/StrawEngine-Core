@@ -8,13 +8,12 @@ public:
   Physics();
   ~Physics();
   AddonBody(AddonType::PhysicsAddon);
-  inline X_Vector GetBodyPosition(bool worldcoords = false){
-      if (!worldcoords) {
-        return X_Vector::fromVec<b2Vec2>(m_body->GetPosition());
-      }
-      return X_Vector::fromVec<b2Vec2>(m_body->GetPosition()) * PhysicsSystem::MPP;
-      
+  inline X_Vector GetBodyPosition(){
+    return X_Vector::fromVec<b2Vec2>(m_body->GetPosition());      
   };
+  inline void SetBodyPosition(X_Vector pos){
+    m_body->SetTransform(X_Vector::ToVec<b2Vec2>(pos / PhysicsSystem::MPP),0);
+  }
   inline void SetVeloctiy(const X_Vector& in){
     m_body->SetLinearVelocity(X_Vector::ToVec<b2Vec2>(in));
   }

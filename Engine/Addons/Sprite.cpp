@@ -6,32 +6,20 @@ void Sprite::OnCreate() {
   vertices[0].position = X_Vector(-0.5f, 0.5f);
   std::cout << "Created : " << vertices[0].position.z << std::endl;
   vertices[0].TexCoord = X_Vector(0.0f, 1.0f);
-
   vertices[1].position = X_Vector(0.5f, 0.5f);
-
   vertices[1].TexCoord = X_Vector(1.0f, 1.0f);
-
   vertices[2].position = X_Vector(0.5f, -0.5f);
-
   vertices[2].TexCoord = X_Vector(1.0f, 0.0f);
-
   vertices[3].position = X_Vector(-0.5f, -0.5f);
   vertices[3].TexCoord = X_Vector(0.0f, 0.0f);
-
+  
   BackupVertices[0].position = X_Vector(-0.5f, 0.5f);
-
   BackupVertices[0].TexCoord = X_Vector(0.0f, 1.0f);
-
   BackupVertices[1].position = X_Vector(0.5f, 0.5f);
-
   BackupVertices[1].TexCoord = X_Vector(1.0f, 1.0f);
-
   BackupVertices[2].position = X_Vector(0.5f, -0.5f);
-
   BackupVertices[2].TexCoord = X_Vector(1.0f, 0.0f);
-
   BackupVertices[3].position = X_Vector(-0.5f, -0.5f);
-
   BackupVertices[3].TexCoord = X_Vector(0.0f, 0.0f);
 }
 

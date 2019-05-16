@@ -34,7 +34,7 @@ Window::Window(int width, int height, std::string Title) {
   //glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glfwSetInputMode(m_window, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
-  glfwSwapInterval(1);
+  glfwSwapInterval(0);
   if (!GLEW_ARB_bindless_texture) {
     std::cout << "No Bindless Textures for your ass" << std::endl;
   }

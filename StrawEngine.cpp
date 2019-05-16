@@ -15,22 +15,21 @@ public:
 };
 class MyGame : public Game {
   EntityHandler me;
-  TextureHandler button;
+  EntityHandler test;
   void Start() override {
     me = MakeSprite(X_Vector(500, 0, 1), X_Vector(100, 100, 20), false);
     me->GetAddon<Sprite>()->tex = GetTexture(
         "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Assets/wall.jpg");
+    me->AddAddon<Physics>();
     me->AddAddon<Script>(
         "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Assets/test.lua");
-    button = GetTexture("/home/mohamedmedhat/StrawEngine/StrawEngine-Core/"
-                        "Assets/blueSheet.png");
-    button->Init();
+    test = MakeEntity(X_Vector(0,0));
+  }
+  void Update(float dt) override {
     
   }
-  void Update(float dt) override {}
   void FixedUpdate(float dt) override {}
   void OnGUI() override {
-    GUI::Button("MAN",400,400,200,200);
     
   }
 };

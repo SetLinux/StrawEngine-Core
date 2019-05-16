@@ -22,9 +22,9 @@ void Script::OnCreate(){
   
   if(!result.valid()){
     sol::error err = result;
-    std::cout << "ERROR Create: " << err.what() << std::endl;
+    std::cout << "ERROR Create(): " << err.what() << std::endl;
   }
-    
+  returntable = tbl;
 };
 
 void Script::OnUpdate(float dt , float alpha) {
@@ -33,7 +33,7 @@ void Script::OnUpdate(float dt , float alpha) {
   
   if(!result.valid()){
     sol::error err = result;
-    std::cout << "ERROR Update: " << err.what() << std::endl;
+    std::cout << "ERROR Update(): " << err.what() << std::endl;
   }
   
 }
@@ -43,7 +43,7 @@ void Script::OnFixedUpdate(float dt) {
   
   if(!result.valid()){
     sol::error err = result;
-    std::cout << "ERROR FixedUpdate: " << err.what() << std::endl;
+    std::cout << "ERROR FixedUpdate(): " << err.what() << std::endl;
   }
   
 }

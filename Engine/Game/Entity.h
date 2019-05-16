@@ -36,6 +36,15 @@ public:
     assert(1);
     return NULL;
   };
+  template <typename T> bool  HasAddon() {
+    for (int i = 0; i < m_Addons.size(); i++) {
+      if ((m_Addons[i])->myType() == T::GetType()) {
+	return true;
+      }
+    }
+    return false;
+  };
+  
   std::vector<std::shared_ptr<Addon>> m_Addons;
   // ID mainly for sorting
   float ID = 0;

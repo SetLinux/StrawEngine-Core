@@ -24,7 +24,7 @@ public:
     delete shdr;
   }
   Shader *shdr;
-  std::vector<std::shared_ptr<Sprite>> mySprites;
+  std::vector<std::shared_ptr<Entity>> mySprites;
   bool batch{true};
 };
 
@@ -50,7 +50,9 @@ public:
   EntityHandler MakeSprite(X_Vector, X_Vector);
   EntityHandler MakeSprite(X_Vector, X_Vector, bool);
   EntityHandler MakeSprite(X_Vector, X_Vector, ShaderBatch *batch);
+  EntityHandler MakeEntity(X_Vector position);
   void DeleteEntity(EntityHandler e);
+  
   TextureHandler GetTexture(std::string path);
   std::vector<std::function<void()>> FixedPhysicsQueue;
   std::vector<std::function<void()>> UpdateQueue;
