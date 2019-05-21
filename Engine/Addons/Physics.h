@@ -15,7 +15,16 @@ public:
     m_body->SetTransform(X_Vector::ToVec<b2Vec2>(pos / PhysicsSystem::MPP),0);
   }
   inline void SetVeloctiy(const X_Vector& in){
-    m_body->SetLinearVelocity(X_Vector::ToVec<b2Vec2>(in));
+    X_Vector dvx = in - getVeloctiy();
+    m_body->ApplyLinearImpulseToCenter(X_Vector::ToVec<b2Vec2>(dvx * m_body->GetMass()), 1);
+    // m_body->SetLinearVelocity();
+
+  }
+  inline float GetRotation(){
+    return owner->Rotation;
+  };
+  inline void SetRotation(const float& in){
+    m_body->SetTransform(m_body->GetPosition(), in);
   }
   inline X_Vector getVeloctiy() {
     return X_Vector::fromVec(m_body->GetLinearVelocity());

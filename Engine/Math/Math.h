@@ -30,7 +30,11 @@ struct X_Vector {
     this->z = z;
     this->w = w;
   }
-  
+  X_Vector Normalize() {
+    float length = std::sqrt(std::pow(this->x,2) + std::pow(this->y,2));
+    if(length == 0) return *this;
+    return *this / length; 
+  }
   // Vector On Vector Operators
   X_Vector operator+(const X_Vector &other) const {
     return X_Vector(x + other.x, y + other.y, z + other.z);
@@ -69,13 +73,16 @@ struct X_Vector {
   bool operator!=(const X_Vector &other) const {
     return (x != other.x || y != other.y || z != other.z);
   }
+  X_Vector operator+=(const X_Vector &other) const{
+    return X_Vector(this->x + other.x , this->y + other.y);
+  }
 
   X_Vector operator*(const glm::mat4 &other) {
 
-    glm::vec4 temp = glm::vec4(x, y, z, 1.0f);
-    glm::vec4 endtemp = temp * other;
-    return X_Vector(endtemp.x, endtemp.y);
-  }
+  glm::vec4 temp = glm::vec4(x, y, z, 1.0f);
+  glm::vec4 endtemp = temp * other;
+  return X_Vector(endtemp.x, endtemp.y);
+}
   template <typename T> static X_Vector fromVec(const T& other, bool zExist);
   template <class T> static X_Vector fromVec(const T& other);
   template <typename T> static T ToVec(const X_Vector& other, bool zExist);
@@ -95,7 +102,9 @@ struct X_Vector {
     float result = std::sqrt(undersqrt);
     return result;
   }
- 
+  static float Dot(const X_Vector& pointa,const X_Vector& pointb){
+    return (pointa.x * pointb.x ) + (pointa.y * pointb.y);
+  }
 };
 // Just Some Template Work
 template <class T> T X_Vector::ToVec(const X_Vector& other, bool zExist) {
@@ -105,6 +114,10 @@ template <class T> T X_Vector::ToVec(const X_Vector& other, bool zExist) {
   if (zExist)
     x.z = other.z;
   return x;
+}
+static float Radians(float degrees){
+  float multiplier= M_PI / 180.f;
+  return degrees * multiplier;
 }
 
 inline std::ostream &operator<<(std::ostream &os, const X_Vector &vec) {

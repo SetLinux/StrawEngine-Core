@@ -22,7 +22,7 @@ public:
   static void SetFont(const std::string& fontFile);
   static void StartRow(int width,int height,int columns);
   static bool Button(const std::string& text,float x,float y,float w,float h);
-  static void Label(const std::string& text);
+  static void Label(const std::string& text,float x,float y,float w,float h);
   static nk_context* ctx;
 private:
   static struct  nk_font *roboto;

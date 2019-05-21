@@ -1,6 +1,7 @@
 #include "Game.h"
+#include "../Rendering/Animation.h"
+#include "../Addons/Animator.h"
 #include <thread>
-
 Game::Game() {
   shdr = new Shader("/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Engine/"
                     "Shaders/base.frag",
@@ -105,6 +106,9 @@ void Game::InnerUpdate(float dt, float alpha) {
   Update(dt);
 
   glEnable(GL_MULTISAMPLE);
+  glEnable(GL_BLEND);
+
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glClearColor(0, 1, 1, 1);
 
@@ -125,8 +129,23 @@ void Game::InnerUpdate(float dt, float alpha) {
         }
       }
       renderer.End();
+    } else {
+      for (int f = 0; f < shdrBatches[i]->mySprites.size(); f++) {
+        if (shdrBatches[i]->mySprites[f]) {
+          renderer.Begin();
+          for (int y = 0; y < shdrBatches[i]->mySprites[f]->m_Addons.size();
+               y++) {
+            shdrBatches[i]->mySprites[f]->m_Addons[y]->OnUpdate(dt, alpha);
+          }
+          if (shdrBatches[i]->mySprites[f]->HasAddon<Sprite>())
+            renderer.Submit(
+                (shdrBatches[i]->mySprites[f]->GetAddon<Sprite>().get()));
+          renderer.End();
+        }
+      }
     }
   }
+
   GUI::BeginRender(dt);
   OnGUI();
   GUI::EndRender();
@@ -173,27 +192,27 @@ bool Game::IsKeyDown(int key) {
   return glfwGetKey(m_Window->m_window, key) == GLFW_PRESS;
 }
 void Game::SetUpLuaBinding() {
+
+  //----------------------- Rendering Architcture Binding --------------------------------
+  ScriptingSystem::LuaRegisterClass<Texture>("Texture", sol::constructors<>(),
+                                             "init", &Texture::Init);
+  ScriptingSystem::luastate["GetTexture"] = [this](const std::string &path) {
+					      return this->GetTexture(path);
+					    };
+   
+
+  ScriptingSystem::LuaRegisterClass<Animation>(
+      "Animation", sol::constructors<Animation()>(), "createAnimation",
+      &Animation::MakeAnimation, "speed", &Animation::speed);
+
+  
+  //------------------------The Humongus GIGANTIC Vector Shit :) --------------------
   ScriptingSystem::LuaRegisterClass<X_Vector>(
       "X_Vector",
       sol::constructors<X_Vector(float, float),
                         X_Vector(float, float, float)>(),
       "x", &X_Vector::x, "y", &X_Vector::y);
-  ScriptingSystem::LuaRegisterClass<Texture>("Texture", sol::constructors<>(),
-                                             "init", &Texture::Init);
-  ScriptingSystem::LuaRegisterClass<Sprite>(
-      "Sprite", sol::constructors<>(), "Texture", &Sprite::tex, "setTexCoords",
-      &Sprite::SetTexBound);
-  ScriptingSystem::LuaRegisterClass<Physics>(
-      "Physics", sol::constructors<>(), "gravity",
-      sol::property(&Physics::GetGravityScale, &Physics::SetGravity),
-      "position",
-      sol::property(&Physics::GetBodyPosition, &Physics::SetBodyPosition),
-      "veloctiy", sol::property(&Physics::getVeloctiy, &Physics::SetVeloctiy));
-
-  ScriptingSystem::luastate["GetTexture"] = [this](const std::string &path) {
-    return this->GetTexture(path);
-  };
-
+ 
   ScriptingSystem::AddMember(
       "X_Vector", sol::meta_method::addition,
       sol::overload([](const X_Vector &self,
@@ -222,22 +241,92 @@ void Game::SetUpLuaBinding() {
                     [](const X_Vector &self, const float other) {
                       return self / other;
                     }));
-  ScriptingSystem::luastate["getKey"] = [this](int key) {
+  ScriptingSystem::AddMember("X_Vector",sol::meta_method::equal_to,[](const X_Vector& self,const X_Vector& other){return (other==self);});
+  
+  //-------------------Internal Addons Registeration -----------------------------
+
+  ScriptingSystem::LuaRegisterClass<Sprite>(
+      "Sprite", sol::constructors<>(), "Texture", &Sprite::tex, "setTexCoords",
+      &Sprite::SetTexBound); 
+  
+  ScriptingSystem::LuaRegisterClass<Physics>(
+      "Physics", sol::constructors<>(), "gravity",
+      sol::property(&Physics::GetGravityScale, &Physics::SetGravity),
+      "position",
+      sol::property(&Physics::GetBodyPosition, &Physics::SetBodyPosition),
+      "veloctiy", sol::property(&Physics::getVeloctiy, &Physics::SetVeloctiy),
+      "rotation", sol::property(&Physics::GetRotation, &Physics::SetRotation),
+      "density",
+      sol::property(
+          [](Physics &self) {
+            return self.getBody()->GetFixtureList()->GetDensity();
+          },
+          [](Physics &self, float a) {
+            self.getBody()->GetFixtureList()->SetDensity(a);
+            self.getBody()->ResetMassData();
+          }),
+      "setBody", [](Physics &self, int type) {
+        self.getBody()->SetType((b2BodyType)type);
+      });
+  ScriptingSystem::LuaRegisterClass<Animator>("Animator",sol::constructors<>(),
+					      "setAnimation",&Animator::SetAnim,
+					      "setSpriteDimensions",&Animator::SetSpriteDimension);
+
+  //--------------------------Input global functions -------------------------------
+  ScriptingSystem::luastate["window"] = ScriptingSystem::luastate.create_table();
+  ScriptingSystem::luastate["window"]["getKey"] = [this](int key) {
     return glfwGetKey(this->m_Window->m_window, key) == GLFW_PRESS;
   };
 
-  ScriptingSystem::luastate["createEntity"] =
-      sol::overload([&](const X_Vector &pos, const X_Vector &scale) {
-        this->MakeSprite(pos, scale, false);
-      });
+  
+  //--------------------------- Physics Body Types Registeration --------------------
+  ScriptingSystem::luastate["bodyType"] = ScriptingSystem::luastate.create_table();
+  ScriptingSystem::luastate["bodyType"]["staticBody"] =
+      b2BodyType::b2_staticBody;
+  ScriptingSystem::luastate["bodyType"]["dynamicBody"] =
+      b2BodyType::b2_dynamicBody;
+  ScriptingSystem::luastate["bodyType"]["kinematicBody"] =
+      b2BodyType::b2_kinematicBody;
 
+  //----------------------------- Physics Global Function ------------------------
+  ScriptingSystem::luastate["setContactListener"] = [&](sol::function func) {
+    PhysicsSystem::MakeListener([&](Entity *A, Entity *B, b2Contact *conc) {
+      b2WorldManifold worldManifold;
+      conc->GetWorldManifold(&worldManifold);
+      X_Vector normal = X_Vector::fromVec(worldManifold.normal);
+      func(A, B, normal);
+    });
+  };
+
+  ScriptingSystem::luastate["RayCast"] =
+      [](const X_Vector &pointa, const X_Vector &pointb, sol::function func) {
+        PhysicsSystem::RayCast(pointa, pointb,
+                               [func](Entity *A, X_Vector B) { func(A, B); });
+      };
+  //----------------Entity Creation----------------------------------------------
+  ScriptingSystem::luastate["createEntity"] = sol::overload(
+      [&](const X_Vector &pos, const X_Vector &scale) {
+        return this->MakeSprite(pos, scale, false);
+      },
+      [&](const X_Vector &pos, const X_Vector &scale, bool physics) {
+        return this->MakeSprite(pos, scale, physics);
+      },
+      [&](const X_Vector &pos) { return MakeEntity(pos); });
+
+  //----------------Entity Registeration---------------------------------------------
   ScriptingSystem::LuaRegisterClass<Entity>(
       "Entity", sol::constructors<>(), "position", &Entity::position, "scale",
       &Entity::scale, "rotation", &Entity::Rotation);
   ScriptingSystem::AddMember("Entity", "getSpriteAddon", [](Entity &self) {
     return self.GetAddon<Sprite>();
   });
-
   ScriptingSystem::AddMember("Entity", "getPhysicsAddon", [](Entity &self) {
-    return self.GetAddon<Physics>();});
+    return self.GetAddon<Physics>();
+  });
+  ScriptingSystem::AddMember("Entity", "createPhysicsAddon", [](Entity &self) {
+    return self.AddAddon<Physics>();
+  });
+  ScriptingSystem::AddMember("Entity", "createSpriteAddon", [](Entity &self) {
+    return self.AddAddon<Sprite>();
+  });
 }

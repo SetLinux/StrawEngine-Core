@@ -58,8 +58,8 @@ bool GUI::Button(const std::string& text,float x,float y ,float w, float h){
   nk_layout_space_push(GUI::ctx, nk_rect(x, y, w, h));
   return nk_button_label(ctx,text.c_str());
 }
-void GUI::Label(const std::string &text){
-  
+void GUI::Label(const std::string &text,float x,float y,float w,float h){
+  nk_layout_space_push(GUI::ctx, nk_rect(x, y, w, h));  
   nk_label(ctx,text.c_str(),NK_TEXT_ALIGN_LEFT);
 }
 void GUI::EndRender() {

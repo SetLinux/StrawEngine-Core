@@ -1,7 +1,7 @@
 #include "PhysicsSystem.h"
 RaycastHandler PhysicsSystem::rch;
 b2World* PhysicsSystem::m_world;
-float PhysicsSystem::MPP = 40.f;
+float PhysicsSystem::MPP = 30.f;
 float PhysicsSystem::Gravity = MPP / -0.5f;
 
 PhysicsSystem::PhysicsSystem()
@@ -22,10 +22,10 @@ void PhysicsSystem::Init()
 
 void PhysicsSystem::UpdateWorld(float dt)
 {
-	m_world->Step(dt, 6,3);
+	m_world->Step(dt, 8,6);
 }
 
-void PhysicsSystem::MakeListener(std::function<void(Entity*,Entity*)> func){
+void PhysicsSystem::MakeListener(std::function<void(Entity*,Entity*,b2Contact*)> func){
   ContactListener* Listener = new ContactListener();
   Listener->OnContactCallBack = func;
   GetWorld()->SetContactListener(Listener);

@@ -36,14 +36,14 @@ Sprite::~Sprite() {
 
 void Sprite::ApplyTransformation() {
   glm::mat4 model = glm::mat4(1.0f);
-  model = glm::translate(
-      model, X_Vector::ToVec<glm::vec3>(X_Vector(std::round(owner->position.x),
-                                                 std::round(owner->position.y),
-                                                 owner->position.z),
-                                        true));
-  // model = glm::translate(model,
-  // X_Vector::ToVec<glm::vec3>(owner->position,true));
-  model = glm::rotate(model,glm::radians(owner->Rotation),glm::vec3(0.0,0.0,1.0f));
+  //  model = glm::translate(
+  //   model, X_Vector::ToVec<glm::vec3>(X_Vector(std::round(owner->position.x),
+  //                                             std::round(owner->position.y),
+  //                                             owner->position.z),
+  //                                    true));
+  model = glm::translate(model,
+   X_Vector::ToVec<glm::vec3>(owner->position,true));
+  model = glm::rotate(model,owner->Rotation,glm::vec3(0.0,0.0,1.0f));
   model = glm::scale(model, X_Vector::ToVec<glm::vec3>(owner->scale + X_Vector(0,0,1),true));
   
   MVP = Camera::main.Projection * Camera::main.getViewMatrix() * model;

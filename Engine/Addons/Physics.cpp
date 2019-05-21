@@ -16,7 +16,7 @@ void Physics::OnCreate()
 		       owner->position.x / PhysicsSystem::MPP,
 		       owner->position.y / PhysicsSystem::MPP);
   bodyDef.userData = (void *)owner.get();
-  bodyDef.fixedRotation = true;
+  //  bodyDef.fixedRotation = true;
   
 
   m_body = PhysicsSystem::GetWorld()->CreateBody(&bodyDef);
@@ -26,11 +26,10 @@ void Physics::OnCreate()
 		 owner->scale.y / 2 / PhysicsSystem::MPP);
   b2FixtureDef fixtureDef;
   fixtureDef.shape = &shape;
-  fixtureDef.density = 1.0f;
-  fixtureDef.friction = 0.0f;
+  fixtureDef.density = 0.5f;
+  fixtureDef.friction = 1.0f;
   fixtureDef.restitution = 0.0f;
   m_body->CreateFixture(&fixtureDef);
-  m_body->GetFixtureList()->SetFriction(0.0f);
 
 }
 void Physics::OnUpdate(float dt, float alpha)

@@ -11,6 +11,7 @@ Animator::Animator() : spriteHeight(0), spriteWidth(0)
 
 Animator::~Animator()
 {
+  delete m_anim;
 }
 
 void Animator::OnCreate() {
@@ -37,20 +38,22 @@ if(CurrentFrameIndex != index){
 	const int numPerRow = owner->GetAddon<Sprite>()->tex->Width / spriteWidth;
 	const float tx = (index % numPerRow) * tw;
 	const float ty = (index/ (numPerRow)) * th;
-	/*
+	
 	const float texVerts[] = {
 		tx, ty,
 		tx + tw, ty,
 		tx + tw, ty + th,
 		tx, ty + th
 	};
-	*/
+	
+	/*
 	const float texVerts[] = {
 		tx + tw, ty + th,
 		tx + tw, ty,
 		tx, ty,
 		tx, ty + th,
 	};
+	*/
 	for (int i = 0; i < 8; i += 2)
 	{
 		owner->GetAddon<Sprite>()->vertices[i / 2].TexCoord = X_Vector(texVerts[i], texVerts[i + 1]);

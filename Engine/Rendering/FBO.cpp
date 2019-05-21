@@ -7,7 +7,7 @@ void FBO::CreateFBO(){
     
     glGenTextures(1,&renderedTexture);
     glBindTexture(GL_TEXTURE_2D,renderedTexture);
-    
+    //TODO : Add Prober window width/height
     glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,1024,720,0,GL_RGB,GL_UNSIGNED_BYTE,0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
