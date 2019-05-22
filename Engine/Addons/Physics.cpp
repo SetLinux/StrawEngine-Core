@@ -17,7 +17,7 @@ void Physics::OnCreate()
 		       owner->position.y / PhysicsSystem::MPP);
   bodyDef.userData = (void *)owner.get();
   //  bodyDef.fixedRotation = true;
-  
+  bodyDef.bullet = true;
 
   m_body = PhysicsSystem::GetWorld()->CreateBody(&bodyDef);
   b2PolygonShape shape;
@@ -29,6 +29,7 @@ void Physics::OnCreate()
   fixtureDef.density = 0.5f;
   fixtureDef.friction = 1.0f;
   fixtureDef.restitution = 0.0f;
+
   m_body->CreateFixture(&fixtureDef);
 
 }

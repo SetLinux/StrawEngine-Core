@@ -12,9 +12,11 @@ public:
     Return temp = returntable[index];
     return temp;
   }
-
+  //Please use this with caution
+  sol::table returntable;
+  sol::table tbl;
 private:
   sol::function create, update, fixedupdate;
-  sol::table returntable;
   std::string m_path;
+  sol::load_result loadresult;
 };

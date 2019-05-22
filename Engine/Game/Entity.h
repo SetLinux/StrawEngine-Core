@@ -1,6 +1,7 @@
 #pragma once
 #include "../Math/Math.h"
 #include "Addon.h"
+#include <string>
 #include <deque>
 #include <iostream>
 #include <list>
@@ -48,6 +49,6 @@ public:
   std::vector<std::shared_ptr<Addon>> m_Addons;
   // ID mainly for sorting
   float ID = 0;
-
+  std::string tagname;
 private:
 };

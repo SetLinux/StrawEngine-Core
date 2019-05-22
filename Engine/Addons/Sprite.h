@@ -17,7 +17,7 @@ public:
   AddonBody(AddonType::SpriteAddon);
 
 public:
-  Vertex vertices[4];
+  volatile Vertex vertices[4];
   std::shared_ptr<Texture> tex;
   // Setting Position and Stuff :D
   void ApplyTransformation();
@@ -28,5 +28,5 @@ public:
   static void LuaBinding();
 private:
   glm::vec4 res;
-  Vertex BackupVertices[4];
+  volatile  Vertex BackupVertices[4];
 };

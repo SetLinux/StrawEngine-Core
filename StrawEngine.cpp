@@ -17,7 +17,6 @@ void testc(Entity *A, Entity *B, b2Contact *contact) {}
 class BulletAddon : public Addon {
 public:
   void OnCreate() override{
-
   };
   void OnUpdate(float dt, float alpha) override {
     X_Vector direction = owner->position - lastpos;
@@ -171,6 +170,9 @@ class MyGame : public Game {
     me->AddAddon<Physics>();
     me->AddAddon<Script>(
         "/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Assets/test.lua");
+
+    EntityHandler TestScript = MakeEntity(X_Vector(0,0));
+    TestScript->AddAddon<Script>("/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Assets/stest.lua");
     test = MakeEntity(X_Vector(0, 0));
     me->GetAddon<Physics>()->getBody()->SetTransform(
         me->GetAddon<Physics>()->getBody()->GetPosition(), Radians(90));
@@ -178,7 +180,6 @@ class MyGame : public Game {
   void Update(float dt) override {
     //    Camera::main.position.x += 1.f;
     timer += dt;
-
     if (glfwGetKey(m_Window->m_window, GLFW_KEY_SPACE)) {
       if (timer > timebetween) {
         X_Vector direction = (Camera::main.ScreenToWorld(X_Vector(
@@ -215,11 +216,21 @@ class MyGame : public Game {
     GUI::Label("Hits : " + std::to_string(score), 0, 0, 300, 300);
   }
 };
-
+class ScriptedGame : public Game {
+public:
+  void Start() override{
+    EntityHandler master = MakeEntity(X_Vector(0,0));
+    master->AddAddon<Script>("/home/mohamedmedhat/StrawEngine/StrawEngine-Core/Assets/master.lua");
+  }
+  void Update(float dt) override{
+  }
+  void FixedUpdate(float dt) override{}
+  
+};
 int main() {
   PhysicsSystem::Gravity = -40;
   Window x(1000, 1000, "TES");
-  MyGame gm;
-
+  //MyGame gm;
+  ScriptedGame gm;
   x.Loop(&gm);
 }
